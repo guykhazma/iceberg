@@ -1,0 +1,570 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A table format for large, slow-moving tabular data">
+    
+    
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    
+    <title>Custom Catalog - Apache Iceberg</title>
+    
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/v4-shims.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.min.css">
+    <link href='//rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="../css/base.min.css" rel="stylesheet">
+    <link href="../css/cinder.min.css" rel="stylesheet">
+
+    
+        
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/github.min.css">
+        
+    
+    <link href="../css/extra.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+        <![endif]-->
+
+    
+
+     
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+
+            
+              <a class="navbar-brand" href="..">Apache Iceberg</a>
+            
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">About</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Project <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../community/">Community</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../releases/">Releases</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../trademarks/">Trademarks</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../how-to-release/">How to Release</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">User docs <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../getting-started/">Getting Started</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../spark/">Spark</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../presto/">Presto</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../configuration/">Configuration</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../schemas/">Schemas</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../partitioning/">Partitioning</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../evolution/">Table evolution</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../performance/">Performance</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../reliability/">Reliability</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../spark#time-travel">Time Travel</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Java <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="https://github.com/apache/iceberg">Git Repo</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../java-api-quickstart/">Quickstart</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../api/">API intro</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="/javadoc/">Javadoc</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Custom Catalog</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Python <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="https://github.com/apache/iceberg/tree/master/python">Git Repo</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../python-quickstart/">Quickstart</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../python-api-intro/">API Intro</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../python-feature-support/">Feature Support</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Format <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../terms/">Definitions</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../spec/">Spec</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="https://github.com/apache/iceberg">Iceberg on GitHub</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">ASF <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="https://www.apache.org/licenses/">License</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://www.apache.org/security/">Security</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://www.apache.org/foundation/thanks.html">Sponsors</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://www.apache.org/foundation/sponsorship.html">Donate</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://www.apache.org/events/current-event.html">Events</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                    <li >
+                        <a rel="prev" href="../api/">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="next" href="../python-quickstart/">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="first-level active"><a href="#custom-catalog-implementation">Custom Catalog Implementation</a></li>
+            <li class="second-level"><a href="#custom-table-operations-implementation">Custom table operations implementation</a></li>
+                
+            <li class="second-level"><a href="#custom-table-implementation">Custom table implementation</a></li>
+                
+            <li class="second-level"><a href="#custom-icebergsource">Custom IcebergSource</a></li>
+                
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<!--
+ - Licensed to the Apache Software Foundation (ASF) under one or more
+ - contributor license agreements.  See the NOTICE file distributed with
+ - this work for additional information regarding copyright ownership.
+ - The ASF licenses this file to You under the Apache License, Version 2.0
+ - (the "License"); you may not use this file except in compliance with
+ - the License.  You may obtain a copy of the License at
+ -
+ -   http://www.apache.org/licenses/LICENSE-2.0
+ -
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS,
+ - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ - See the License for the specific language governing permissions and
+ - limitations under the License.
+ -->
+
+<h1 id="custom-catalog-implementation">Custom Catalog Implementation<a class="headerlink" href="#custom-catalog-implementation" title="Permanent link">&para;</a></h1>
+<p>It&rsquo;s possible to read an iceberg table either from an hdfs path or from a hive table. It&rsquo;s also possible to use a custom metastore in place of hive. The steps to do that are as follows.</p>
+<ul>
+<li><a href="#custom-table-operations-implementation">Custom TableOperations</a></li>
+<li><a href="#custom-table-implementation">Custom Catalog</a></li>
+<li><a href="#custom-icebergsource">Custom IcebergSource</a></li>
+</ul>
+<h3 id="custom-table-operations-implementation">Custom table operations implementation<a class="headerlink" href="#custom-table-operations-implementation" title="Permanent link">&para;</a></h3>
+<p>Extend <code>BaseMetastoreTableOperations</code> to provide implementation on how to read and write metadata</p>
+<p>Example:</p>
+<pre><code class="language-java">class CustomTableOperations extends BaseMetastoreTableOperations {
+  private String dbName;
+  private String tableName;
+  private Configuration conf;
+  private FileIO fileIO;
+
+  protected CustomTableOperations(Configuration conf, String dbName, String tableName) {
+    this.conf = conf;
+    this.dbName = dbName;
+    this.tableName = tableName;
+  }
+
+  // The doRefresh method should provide implementation on how to get the metadata location
+  @Override
+  public void doRefresh() {
+
+    // Example custom service which returns the metadata location given a dbName and tableName
+    String metadataLocation = CustomService.getMetadataForTable(conf, dbName, tableName);
+
+    // When updating from a metadata file location, call the helper method
+    refreshFromMetadataLocation(metadataLocation);
+
+  }
+
+  // The doCommit method should provide implementation on how to update with metadata location atomically
+  @Override
+  public void doCommit(TableMetadata base, TableMetadata metadata) {
+    String oldMetadataLocation = base.location();
+
+    // Write new metadata using helper method
+    String newMetadataLocation = writeNewMetadata(metadata, currentVersion() + 1);
+
+    // Example custom service which updates the metadata location for the given db and table atomically
+    CustomService.updateMetadataLocation(dbName, tableName, oldMetadataLocation, newMetadataLocation);
+
+  }
+
+  // The io method provides a FileIO which is used to read and write the table metadata files
+  @Override
+  public FileIO io() {
+    if (fileIO == null) {
+      fileIO = new HadoopFileIO(conf);
+    }
+    return fileIO;
+  }
+}
+</code></pre>
+<h3 id="custom-table-implementation">Custom table implementation<a class="headerlink" href="#custom-table-implementation" title="Permanent link">&para;</a></h3>
+<p>Extend <code>BaseMetastoreCatalog</code> to provide default warehouse locations and instantiate <code>CustomTableOperations</code></p>
+<p>Example:</p>
+<pre><code class="language-java">public class CustomCatalog extends BaseMetastoreCatalog {
+
+  private Configuration configuration;
+
+  public CustomCatalog(Configuration configuration) {
+    this.configuration = configuration;
+  }
+
+  @Override
+  protected TableOperations newTableOps(TableIdentifier tableIdentifier) {
+    String dbName = tableIdentifier.namespace().level(0);
+    String tableName = tableIdentifier.name();
+    // instantiate the CustomTableOperations
+    return new CustomTableOperations(configuration, dbName, tableName);
+  }
+
+  @Override
+  protected String defaultWarehouseLocation(TableIdentifier tableIdentifier) {
+
+    // Can choose to use any other configuration name
+    String tableLocation = configuration.get(&quot;custom.iceberg.warehouse.location&quot;);
+
+    // Can be an s3 or hdfs path
+    if (tableLocation == null) {
+      throw new RuntimeException(&quot;custom.iceberg.warehouse.location configuration not set!&quot;);
+    }
+
+    return String.format(
+            &quot;%s/%s.db/%s&quot;, tableLocation,
+            tableIdentifier.namespace().levels()[0],
+            tableIdentifier.name());
+  }
+
+  @Override
+  public boolean dropTable(TableIdentifier identifier, boolean purge) {
+    // Example service to delete table
+    CustomService.deleteTable(identifier.namepsace().level(0), identifier.name());
+  }
+
+  @Override
+  public void renameTable(TableIdentifier from, TableIdentifier to) {
+    Preconditions.checkArgument(from.namespace().level(0).equals(to.namespace().level(0)),
+            &quot;Cannot move table between databases&quot;);
+    // Example service to rename table
+    CustomService.renameTable(from.namepsace().level(0), from.name(), to.name());
+  }
+}
+</code></pre>
+<h3 id="custom-icebergsource">Custom IcebergSource<a class="headerlink" href="#custom-icebergsource" title="Permanent link">&para;</a></h3>
+<p>Extend <code>IcebergSource</code> and provide implementation to read from <code>CustomCatalog</code></p>
+<p>Example:</p>
+<pre><code class="language-java">public class CustomIcebergSource extends IcebergSource {
+
+  @Override
+  protected Table findTable(DataSourceOptions options, Configuration conf) {
+    Optional&lt;String&gt; path = options.get(&quot;path&quot;);
+    Preconditions.checkArgument(path.isPresent(), &quot;Cannot open table: path is not set&quot;);
+
+    // Read table from CustomCatalog
+    CustomCatalog catalog = new CustomCatalog(conf);
+    TableIdentifier tableIdentifier = TableIdentifier.parse(path.get());
+    return catalog.loadTable(tableIdentifier);
+  }
+}
+</code></pre>
+<p>Register the <code>CustomIcebergSource</code> by updating  <code>META-INF/services/org.apache.spark.sql.sources.DataSourceRegister</code> with its fully qualified name</p></div>
+        
+        
+    </div>
+
+    
+      <footer class="col-md-12 text-center">
+          
+          
+            <hr>
+            <p>
+            <small>Copyright 2018-2020 <a href='https://www.apache.org/'>The Apache Software Foundation</a><br />Apache Iceberg, Iceberg, Apache, the Apache feather logo, and the Apache Iceberg project logo are either registered<br />trademarks or trademarks of The Apache Software Foundation in the United States and other countries.</small><br>
+            
+            <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</small>
+            </p>
+          
+
+          
+          
+      </footer>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="../js/bootstrap-3.0.3.min.js"></script>
+
+    
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js"></script>
+        
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    <script>var base_url = ".."</script>
+    
+    <script src="../js/base.js"></script>
+
+    <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+    </body>
+
+</html>

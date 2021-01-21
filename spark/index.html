@@ -1,0 +1,973 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A table format for large, slow-moving tabular data">
+    
+    
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    
+    <title>Spark - Apache Iceberg</title>
+    
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/v4-shims.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.min.css">
+    <link href='//rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="../css/base.min.css" rel="stylesheet">
+    <link href="../css/cinder.min.css" rel="stylesheet">
+
+    
+        
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/github.min.css">
+        
+    
+    <link href="../css/extra.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+        <![endif]-->
+
+    
+
+     
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+
+            
+              <a class="navbar-brand" href="..">Apache Iceberg</a>
+            
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">About</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Project <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../community/">Community</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../releases/">Releases</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../trademarks/">Trademarks</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../how-to-release/">How to Release</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">User docs <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../getting-started/">Getting Started</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Spark</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../presto/">Presto</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../configuration/">Configuration</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../schemas/">Schemas</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../partitioning/">Partitioning</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../evolution/">Table evolution</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../performance/">Performance</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../reliability/">Reliability</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../spark#time-travel">Time Travel</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Java <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="https://github.com/apache/iceberg">Git Repo</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../java-api-quickstart/">Quickstart</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../api/">API intro</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="/javadoc/">Javadoc</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../custom-catalog/">Custom Catalog</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Python <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="https://github.com/apache/iceberg/tree/master/python">Git Repo</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../python-quickstart/">Quickstart</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../python-api-intro/">API Intro</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../python-feature-support/">Feature Support</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Format <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../terms/">Definitions</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../spec/">Spec</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="https://github.com/apache/iceberg">Iceberg on GitHub</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">ASF <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="https://www.apache.org/licenses/">License</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://www.apache.org/security/">Security</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://www.apache.org/foundation/thanks.html">Sponsors</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://www.apache.org/foundation/sponsorship.html">Donate</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://www.apache.org/events/current-event.html">Events</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                    <li >
+                        <a rel="prev" href="../getting-started/">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="next" href="../presto/">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="first-level active"><a href="#spark">Spark</a></li>
+            <li class="second-level"><a href="#configuring-catalogs">Configuring catalogs</a></li>
+                
+                <li class="third-level"><a href="#using-catalogs">Using catalogs</a></li>
+                <li class="third-level"><a href="#replacing-the-session-catalog">Replacing the session catalog</a></li>
+            <li class="second-level"><a href="#ddl-commands">DDL commands</a></li>
+                
+                <li class="third-level"><a href="#create-table">CREATE TABLE</a></li>
+                <li class="third-level"><a href="#create-table-as-select">CREATE TABLE ... AS SELECT</a></li>
+                <li class="third-level"><a href="#replace-table-as-select">REPLACE TABLE ... AS SELECT</a></li>
+                <li class="third-level"><a href="#alter-table">ALTER TABLE</a></li>
+                <li class="third-level"><a href="#alter-table-rename-to">ALTER TABLE ... RENAME TO</a></li>
+                <li class="third-level"><a href="#alter-table-set-tblproperties">ALTER TABLE ... SET TBLPROPERTIES</a></li>
+                <li class="third-level"><a href="#alter-table-add-column">ALTER TABLE ... ADD COLUMN</a></li>
+                <li class="third-level"><a href="#alter-table-rename-column">ALTER TABLE ... RENAME COLUMN</a></li>
+                <li class="third-level"><a href="#alter-table-alter-column">ALTER TABLE ... ALTER COLUMN</a></li>
+                <li class="third-level"><a href="#alter-table-drop-column">ALTER TABLE ... DROP COLUMN</a></li>
+                <li class="third-level"><a href="#drop-table">DROP TABLE</a></li>
+            <li class="second-level"><a href="#querying-with-sql">Querying with SQL</a></li>
+                
+            <li class="second-level"><a href="#querying-with-dataframes">Querying with DataFrames</a></li>
+                
+                <li class="third-level"><a href="#time-travel">Time travel</a></li>
+                <li class="third-level"><a href="#spark-24">Spark 2.4</a></li>
+            <li class="second-level"><a href="#writing-with-sql">Writing with SQL</a></li>
+                
+                <li class="third-level"><a href="#insert-into">INSERT INTO</a></li>
+                <li class="third-level"><a href="#insert-overwrite">INSERT OVERWRITE</a></li>
+                <li class="third-level"><a href="#delete-from">DELETE FROM</a></li>
+            <li class="second-level"><a href="#writing-with-dataframes">Writing with DataFrames</a></li>
+                
+                <li class="third-level"><a href="#appending-data">Appending data</a></li>
+                <li class="third-level"><a href="#overwriting-data">Overwriting data</a></li>
+                <li class="third-level"><a href="#creating-tables">Creating tables</a></li>
+            <li class="second-level"><a href="#inspecting-tables">Inspecting tables</a></li>
+                
+                <li class="third-level"><a href="#history">History</a></li>
+                <li class="third-level"><a href="#snapshots">Snapshots</a></li>
+                <li class="third-level"><a href="#manifests">Manifests</a></li>
+                <li class="third-level"><a href="#files">Files</a></li>
+                <li class="third-level"><a href="#inspecting-with-dataframes">Inspecting with DataFrames</a></li>
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<!--
+ - Licensed to the Apache Software Foundation (ASF) under one or more
+ - contributor license agreements.  See the NOTICE file distributed with
+ - this work for additional information regarding copyright ownership.
+ - The ASF licenses this file to You under the Apache License, Version 2.0
+ - (the "License"); you may not use this file except in compliance with
+ - the License.  You may obtain a copy of the License at
+ -
+ -   http://www.apache.org/licenses/LICENSE-2.0
+ -
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS,
+ - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ - See the License for the specific language governing permissions and
+ - limitations under the License.
+ -->
+
+<h1 id="spark">Spark<a class="headerlink" href="#spark" title="Permanent link">&para;</a></h1>
+<p>Iceberg uses Apache Spark&rsquo;s DataSourceV2 API for data source and catalog implementations. Spark DSv2 is an evolving API with different levels of support in Spark versions.</p>
+<table>
+<thead>
+<tr>
+<th>Feature support</th>
+<th>Spark 3.0</th>
+<th>Spark 2.4</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><a href="#create-table">SQL create table</a></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#create-table-as-select">SQL create table as</a></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#replace-table-as-select">SQL replace table as</a></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#alter-table">SQL alter table</a></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#drop-table">SQL drop table</a></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#querying-with-sql">SQL select</a></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#insert-into">SQL insert into</a></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#insert-overwrite">SQL insert overwrite</a></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#querying-with-dataframes">DataFrame reads</a></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#appending-data">DataFrame append</a></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#overwriting-data">DataFrame overwrite</a></td>
+<td>✔️</td>
+<td>✔️</td>
+<td>⚠ Behavior changed in Spark 3.0</td>
+</tr>
+<tr>
+<td><a href="#creating-tables">DataFrame CTAS and RTAS</a></td>
+<td>✔️</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><a href="#inspecting-tables">Metadata tables</a></td>
+<td>✔️</td>
+<td>✔️</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<h2 id="configuring-catalogs">Configuring catalogs<a class="headerlink" href="#configuring-catalogs" title="Permanent link">&para;</a></h2>
+<p>Spark 3.0 adds an API to plug in table catalogs that are used to load, create, and manage Iceberg tables. Spark catalogs are configured by setting <a href="../configuration#catalogs">Spark properties</a> under <code>spark.sql.catalog</code>.</p>
+<p>This creates an Iceberg catalog named <code>hive_prod</code> that loads tables from a Hive metastore:</p>
+<pre><code class="language-plain">spark.sql.catalog.hive_prod = org.apache.iceberg.spark.SparkCatalog
+spark.sql.catalog.hive_prod.type = hive
+spark.sql.catalog.hive_prod.uri = thrift://metastore-host:port
+</code></pre>
+<p>Iceberg also supports a directory-based catalog in HDFS that can be configured using <code>type=hadoop</code>:</p>
+<pre><code class="language-plain">spark.sql.catalog.hadoop_prod = org.apache.iceberg.spark.SparkCatalog
+spark.sql.catalog.hadoop_prod.type = hadoop
+spark.sql.catalog.hadoop_prod.warehouse = hdfs://nn:8020/warehouse/path
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The Hive-based catalog only loads Iceberg tables. To load non-Iceberg tables in the same Hive metastore, use a <a href="#replacing-the-session-catalog">session catalog</a>.</p>
+</div>
+<h3 id="using-catalogs">Using catalogs<a class="headerlink" href="#using-catalogs" title="Permanent link">&para;</a></h3>
+<p>Catalog names are used in SQL queries to identify a table. In the examples above, <code>hive_prod</code> and <code>hadoop_prod</code> can be used to prefix database and table names that will be loaded from those catalogs.</p>
+<pre><code class="language-sql">SELECT * FROM hive_prod.db.table -- load db.table from catalog hive_prod
+</code></pre>
+<p>Spark 3 keeps track of the current catalog and namespace, which can be omitted from table names.</p>
+<pre><code class="language-sql">USE hive_prod.db;
+SELECT * FROM table -- load db.table from catalog hive_prod
+</code></pre>
+<p>To see the current catalog and namespace, run <code>SHOW CURRENT NAMESPACE</code>.</p>
+<h3 id="replacing-the-session-catalog">Replacing the session catalog<a class="headerlink" href="#replacing-the-session-catalog" title="Permanent link">&para;</a></h3>
+<p>To add Iceberg table support to Spark&rsquo;s built-in catalog, configure <code>spark_catalog</code> to use Iceberg&rsquo;s <code>SparkSessionCatalog</code>.</p>
+<pre><code class="language-plain">spark.sql.catalog.spark_catalog = org.apache.iceberg.spark.SparkSessionCatalog
+spark.sql.catalog.spark_catalog.type = hive
+# omit uri to use the same URI as Spark: hive.metastore.uris in hive-site.xml
+</code></pre>
+<p>Spark&rsquo;s built-in catalog supports existing v1 and v2 tables tracked in a Hive Metastore. This configures Spark to use Iceberg&rsquo;s <code>SparkSessionCatalog</code> as a wrapper around that session catalog. When a table is not an Iceberg table, the built-in catalog will be used to load it instead.</p>
+<p>This configuration can use same Hive Metastore for both Iceberg and non-Iceberg tables.</p>
+<h2 id="ddl-commands">DDL commands<a class="headerlink" href="#ddl-commands" title="Permanent link">&para;</a></h2>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Spark 2.4 can&rsquo;t create Iceberg tables with DDL, instead use the <a href="../java-api-quickstart">Iceberg API</a>.</p>
+</div>
+<h3 id="create-table"><code>CREATE TABLE</code><a class="headerlink" href="#create-table" title="Permanent link">&para;</a></h3>
+<p>Spark 3.0 can create tables in any Iceberg catalog with the clause <code>USING iceberg</code>:</p>
+<pre><code class="language-sql">CREATE TABLE prod.db.sample (
+    id bigint COMMENT 'unique id',
+    data string)
+USING iceberg
+</code></pre>
+<p>Table create commands, including CTAS and RTAS, support the full range of Spark create clauses, including:</p>
+<ul>
+<li><code>PARTITION BY (partition-expressions)</code> to configure partitioning</li>
+<li><code>LOCATION '(fully-qualified-uri)'</code> to set the table location</li>
+<li><code>COMMENT 'table documentation'</code> to set a table description</li>
+<li><code>TBLPROPERTIES ('key'='value', ...)</code> to set <a href="../configuration">table configuration</a></li>
+</ul>
+<p>Create commands may also set the default format with the <code>USING</code> clause. This is only supported for <code>SparkCatalog</code> because Spark handles the <code>USING</code> clause differently for the built-in catalog.</p>
+<h4 id="partitioned-by"><code>PARTITIONED BY</code><a class="headerlink" href="#partitioned-by" title="Permanent link">&para;</a></h4>
+<p>To create a partitioned table, use <code>PARTITIONED BY</code>:</p>
+<pre><code class="language-sql">CREATE TABLE prod.db.sample (
+    id bigint,
+    data string,
+    category string)
+USING iceberg
+PARTITIONED BY (category)
+</code></pre>
+<p>The <code>PARTITIONED BY</code> clause supports transform expressions to create <a href="../partitioning">hidden partitions</a>.</p>
+<pre><code class="language-sql">CREATE TABLE prod.db.sample (
+    id bigint,
+    data string,
+    category string,
+    ts timestamp)
+USING iceberg
+PARTITIONED BY (bucket(16, id), days(ts), category)
+</code></pre>
+<p>Supported partition transforms are:</p>
+<ul>
+<li><code>years</code> for yearly partitions</li>
+<li><code>months</code> for monthly partitions</li>
+<li><code>days</code> for daily partitions</li>
+<li><code>hours</code> for hourly partitions</li>
+<li><code>bucket</code> for bucketing (with width)</li>
+<li><code>truncate</code> to truncate integers or strings (with length)</li>
+</ul>
+<h3 id="create-table-as-select"><code>CREATE TABLE ... AS SELECT</code><a class="headerlink" href="#create-table-as-select" title="Permanent link">&para;</a></h3>
+<p>Iceberg supports CTAS as an atomic operation when using a <a href="#configuring-catalogs"><code>SparkCatalog</code></a>. CTAS is supported, but is not atomic when using <a href="#replacing-the-session-catalog"><code>SparkSessionCatalog</code></a>.</p>
+<pre><code class="language-sql">CREATE TABLE prod.db.sample
+USING iceberg
+AS SELECT ...
+</code></pre>
+<h3 id="replace-table-as-select"><code>REPLACE TABLE ... AS SELECT</code><a class="headerlink" href="#replace-table-as-select" title="Permanent link">&para;</a></h3>
+<p>Iceberg supports RTAS as an atomic operation when using a <a href="#configuring-catalogs"><code>SparkCatalog</code></a>. RTAS is supported, but is not atomic when using <a href="#replacing-the-session-catalog"><code>SparkSessionCatalog</code></a>.</p>
+<p>Atomic table replacement creates a new snapshot with the results of the <code>SELECT</code> query, but keeps table history.</p>
+<pre><code class="language-sql">REPLACE TABLE prod.db.sample
+USING iceberg
+AS SELECT ...
+</code></pre>
+<pre><code class="language-sql">CREATE OR REPLACE TABLE prod.db.sample
+USING iceberg
+AS SELECT ...
+</code></pre>
+<p>The schema and partition spec will be replaced if changed. To avoid modifying the table&rsquo;s schema and partitioning, use <code>INSERT OVERWRITE</code> instead of <code>REPLACE TABLE</code>.</p>
+<h3 id="alter-table"><code>ALTER TABLE</code><a class="headerlink" href="#alter-table" title="Permanent link">&para;</a></h3>
+<p>Iceberg has full <code>ALTER TABLE</code> support in Spark 3, including:</p>
+<ul>
+<li>Renaming a table</li>
+<li>Setting or removing table properties</li>
+<li>Adding, deleting, and renaming columns</li>
+<li>Adding, deleting, and renaming nested fields</li>
+<li>Reordering top-level columns and nested struct fields</li>
+<li>Widening the type of <code>int</code>, <code>float</code>, and <code>decimal</code> fields</li>
+<li>Making required columns optional</li>
+</ul>
+<h3 id="alter-table-rename-to"><code>ALTER TABLE ... RENAME TO</code><a class="headerlink" href="#alter-table-rename-to" title="Permanent link">&para;</a></h3>
+<pre><code class="language-sql">ALTER TABLE prod.db.sample RENAME TO prod.db.new_name
+</code></pre>
+<h3 id="alter-table-set-tblproperties"><code>ALTER TABLE ... SET TBLPROPERTIES</code><a class="headerlink" href="#alter-table-set-tblproperties" title="Permanent link">&para;</a></h3>
+<pre><code class="language-sql">ALTER TABLE prod.db.sample SET TBLPROPERTIES (
+    'read.split.target-size'='268435456'
+)
+</code></pre>
+<p>Iceberg uses table properties to control table behavior. For a list of available properties, see <a href="../configuration">Table configuration</a>.</p>
+<p><code>UNSET</code> is used to remove properties:</p>
+<pre><code class="language-sql">ALTER TABLE prod.db.sample UNSET TBLPROPERTIES ('read.split.target-size')
+</code></pre>
+<h3 id="alter-table-add-column"><code>ALTER TABLE ... ADD COLUMN</code><a class="headerlink" href="#alter-table-add-column" title="Permanent link">&para;</a></h3>
+<pre><code class="language-sql">ALTER TABLE prod.db.sample ADD COLUMN point struct&lt;x: double NOT NULL, y: double NOT NULL&gt; AFTER data
+ALTER TABLE prod.db.sample ADD COLUMN point.z double FIRST
+</code></pre>
+<h3 id="alter-table-rename-column"><code>ALTER TABLE ... RENAME COLUMN</code><a class="headerlink" href="#alter-table-rename-column" title="Permanent link">&para;</a></h3>
+<pre><code class="language-sql">ALTER TABLE prod.db.sample RENAME COLUMN data TO payload
+ALTER TABLE prod.db.sample RENAME COLUMN location.lat TO latitude
+</code></pre>
+<p>Note that nested rename commands only rename the leaf field. The above command renames <code>location.lat</code> to <code>location.latitude</code></p>
+<h3 id="alter-table-alter-column"><code>ALTER TABLE ... ALTER COLUMN</code><a class="headerlink" href="#alter-table-alter-column" title="Permanent link">&para;</a></h3>
+<p>Alter column is used to widen types, make a field optional, set comments, and reorder fields.</p>
+<pre><code class="language-sql">ALTER TABLE prod.db.sample ALTER COLUMN id DROP NOT NULL
+ALTER TABLE prod.db.sample ALTER COLUMN location.lat TYPE double
+ALTER TABLE prod.db.sample ALTER COLUMN point.z AFTER y
+ALTER TABLE prod.db.sample ALTER COLUMN id COMMENT 'unique id'
+</code></pre>
+<h3 id="alter-table-drop-column"><code>ALTER TABLE ... DROP COLUMN</code><a class="headerlink" href="#alter-table-drop-column" title="Permanent link">&para;</a></h3>
+<pre><code class="language-sql">ALTER TABLE prod.db.sample DROP COLUMN id
+ALTER TABLE prod.db.sample DROP COLUMN point.z
+</code></pre>
+<h3 id="drop-table"><code>DROP TABLE</code><a class="headerlink" href="#drop-table" title="Permanent link">&para;</a></h3>
+<p>To delete a table, run:</p>
+<pre><code class="language-sql">DROP TABLE prod.db.sample
+</code></pre>
+<h2 id="querying-with-sql">Querying with SQL<a class="headerlink" href="#querying-with-sql" title="Permanent link">&para;</a></h2>
+<p>In Spark 3, tables use identifiers that include a <a href="#using-catalogs">catalog name</a>.</p>
+<pre><code class="language-sql">SELECT * FROM prod.db.table -- catalog: prod, namespace: db, table: table
+</code></pre>
+<p>Metadata tables, like <code>history</code> and <code>snapshots</code>, can use the Iceberg table name as a namespace.</p>
+<p>For example, to read from the <code>files</code> metadata table for <code>prod.db.table</code>, run:</p>
+<pre><code>SELECT * FROM prod.db.table.files
+</code></pre>
+<h2 id="querying-with-dataframes">Querying with DataFrames<a class="headerlink" href="#querying-with-dataframes" title="Permanent link">&para;</a></h2>
+<p>To load a table as a DataFrame, use <code>table</code>:</p>
+<pre><code class="language-scala">val df = spark.table(&quot;prod.db.table&quot;)
+</code></pre>
+<p>To configure the <code>DataFrameReader</code>, use a reader directly:</p>
+<pre><code class="language-sql">val df = spark.read
+    .option(&quot;split-size&quot;, &quot;268435456&quot;)
+    .table(&quot;prod.db.table&quot;)
+</code></pre>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When reading with DataFrames in Spark 3, use <code>table</code> to load a table by name from a catalog.
+Using <code>format("iceberg")</code> loads an isolated table reference that is not refreshed when other queries update the table.</p>
+</div>
+<h3 id="time-travel">Time travel<a class="headerlink" href="#time-travel" title="Permanent link">&para;</a></h3>
+<p>To select a specific table snapshot or the snapshot at some time, Iceberg supports two Spark read options:</p>
+<ul>
+<li><code>snapshot-id</code> selects a specific table snapshot</li>
+<li><code>as-of-timestamp</code> selects the current snapshot at a timestamp, in milliseconds</li>
+</ul>
+<pre><code class="language-scala">// time travel to October 26, 1986 at 01:21:00
+spark.read
+    .option(&quot;as-of-timestamp&quot;, &quot;499162860000&quot;)
+    .table(&quot;prod.db.table&quot;)
+</code></pre>
+<pre><code class="language-scala">// time travel to snapshot with ID 10963874102873L
+spark.read
+    .option(&quot;snapshot-id&quot;, 10963874102873L)
+    .table(&quot;prod.db.table&quot;)
+</code></pre>
+<p>Time travel is not yet supported by Spark&rsquo;s SQL syntax.</p>
+<h3 id="spark-24">Spark 2.4<a class="headerlink" href="#spark-24" title="Permanent link">&para;</a></h3>
+<p>Spark 2.4 requires using the DataFrame reader with <code>iceberg</code> as a format, becuase 2.4 does not support catalogs:</p>
+<pre><code class="language-scala">// named metastore table
+spark.read.format(&quot;iceberg&quot;).load(&quot;db.table&quot;)
+// Hadoop path table
+spark.read.format(&quot;iceberg&quot;).load(&quot;hdfs://nn:8020/path/to/table&quot;)
+</code></pre>
+<h4 id="spark-24-with-sql">Spark 2.4 with SQL<a class="headerlink" href="#spark-24-with-sql" title="Permanent link">&para;</a></h4>
+<p>To run SQL <code>SELECT</code> statements on Iceberg tables in 2.4, register the DataFrame as a temporary table:</p>
+<pre><code class="language-scala">val df = spark.read.format(&quot;iceberg&quot;).load(&quot;db.table&quot;)
+df.createOrReplaceTempView(&quot;table&quot;)
+
+spark.sql(&quot;&quot;&quot;select count(1) from table&quot;&quot;&quot;).show()
+</code></pre>
+<h2 id="writing-with-sql">Writing with SQL<a class="headerlink" href="#writing-with-sql" title="Permanent link">&para;</a></h2>
+<p>Spark 3 supports SQL <code>INSERT INTO</code> and <code>INSERT OVERWRITE</code>, as well as the new <code>DataFrameWriterV2</code> API.</p>
+<h3 id="insert-into"><code>INSERT INTO</code><a class="headerlink" href="#insert-into" title="Permanent link">&para;</a></h3>
+<p>To append new data to a table, use <code>INSERT INTO</code>.</p>
+<pre><code class="language-sql">INSERT INTO prod.db.table VALUES (1, 'a'), (2, 'b')
+</code></pre>
+<pre><code class="language-sql">INSERT INTO prod.db.table SELECT ...
+</code></pre>
+<h3 id="insert-overwrite"><code>INSERT OVERWRITE</code><a class="headerlink" href="#insert-overwrite" title="Permanent link">&para;</a></h3>
+<p>To replace data in the table with the result of a query, use <code>INSERT OVERWRITE</code>. Overwrites are atomic operations for Iceberg tables.</p>
+<p>The partitions that will be replaced by <code>INSERT OVERWRITE</code> depends on Spark&rsquo;s partition overwrite mode and the partitioning of a table.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Spark 3.0.0 has a correctness bug that affects dynamic <code>INSERT OVERWRITE</code> with hidden partitioning, <a href="https://issues.apache.org/jira/browse/SPARK-32168">SPARK-32168</a>.
+For tables with <a href="../partitioning">hidden partitions</a>, wait for Spark 3.0.1.</p>
+</div>
+<h4 id="overwrite-behavior">Overwrite behavior<a class="headerlink" href="#overwrite-behavior" title="Permanent link">&para;</a></h4>
+<p>Spark&rsquo;s default overwrite mode is <strong>static</strong>, but <strong>dynamic overwrite mode is recommended when writing to Iceberg tables.</strong> Static overwrite mode determines which partitions to overwrite in a table by converting the <code>PARTITION</code> clause to a filter, but the <code>PARTITION</code> clause can only reference table columns.</p>
+<p>Dynamic overwrite mode is configured by setting <code>spark.sql.sources.partitionOverwriteMode=dynamic</code>.</p>
+<p>To demonstrate the behavior of dynamic and static overwrites, consider a <code>logs</code> table defined by the following DDL:</p>
+<pre><code class="language-sql">CREATE TABLE prod.my_app.logs (
+    uuid string NOT NULL,
+    level string NOT NULL,
+    ts timestamp NOT NULL,
+    message string)
+USING iceberg
+PARTITIONED BY (level, hours(ts))
+</code></pre>
+<h4 id="dynamic-overwrite">Dynamic overwrite<a class="headerlink" href="#dynamic-overwrite" title="Permanent link">&para;</a></h4>
+<p>When Spark&rsquo;s overwrite mode is dynamic, partitions that have rows produced by the <code>SELECT</code> query will be replaced.</p>
+<p>For example, this query removes duplicate log events from the example <code>logs</code> table.</p>
+<pre><code class="language-sql">INSERT OVERWRITE prod.my_app.logs
+SELECT uuid, first(level), first(ts), first(message)
+FROM prod.my_app.logs
+WHERE cast(ts as date) = '2020-07-01'
+GROUP BY uuid
+</code></pre>
+<p>In dynamic mode, this will replace any partition with rows in the <code>SELECT</code> result. Because the date of all rows is restricted to 1 July, only hours of that day will be replaced.</p>
+<h4 id="static-overwrite">Static overwrite<a class="headerlink" href="#static-overwrite" title="Permanent link">&para;</a></h4>
+<p>When Spark&rsquo;s overwrite mode is static, the <code>PARTITION</code> clause is converted to a filter that is used to delete from the table. If the <code>PARTITION</code> clause is omitted, all partitions will be replaced.</p>
+<p>Because there is no <code>PARTITION</code> clause in the query above, it will drop all existing rows in the table when run in static mode, but will only write the logs from 1 July.</p>
+<p>To overwrite just the partitions that were loaded, add a <code>PARTITION</code> clause that aligns with the <code>SELECT</code> query filter:</p>
+<pre><code class="language-sql">INSERT OVERWRITE prod.my_app.logs
+PARTITION (level = 'INFO')
+SELECT uuid, first(level), first(ts), first(message)
+FROM prod.my_app.logs
+WHERE level = 'INFO'
+GROUP BY uuid
+</code></pre>
+<p>Note that this mode cannot replace hourly partitions like the dynamic example query because the <code>PARTITION</code> clause can only reference table columns, not hidden partitions.</p>
+<h3 id="delete-from"><code>DELETE FROM</code><a class="headerlink" href="#delete-from" title="Permanent link">&para;</a></h3>
+<p>Spark 3 added support for <code>DELETE FROM</code> queries to remove data from tables.</p>
+<p>Delete queries accept a filter to match rows to delete. Iceberg can delete data as long as the filter matches entire partitions of the table, or it can determine that all rows of a file match. If a file contains some rows that should be deleted and some that should not, Iceberg will throw an exception.</p>
+<pre><code class="language-sql">DELETE FROM prod.db.table
+WHERE ts &gt;= '2020-05-01 00:00:00' and ts &lt; '2020-06-01 00:00:00'
+</code></pre>
+<h2 id="writing-with-dataframes">Writing with DataFrames<a class="headerlink" href="#writing-with-dataframes" title="Permanent link">&para;</a></h2>
+<p>Spark 3 introduced the new <code>DataFrameWriterV2</code> API for writing to tables using data frames. The v2 API is recommended for several reasons:</p>
+<ul>
+<li>CTAS, RTAS, and overwrite by filter are supported</li>
+<li>All operations consistently write columns to a table by name</li>
+<li>Hidden partition expressions are supported in <code>partitionedBy</code></li>
+<li>Overwrite behavior is explicit, either dynamic or by a user-supplied filter</li>
+<li>The behavior of each operation corresponds to SQL statements<ul>
+<li><code>df.writeTo(t).create()</code> is equivalent to <code>CREATE TABLE AS SELECT</code></li>
+<li><code>df.writeTo(t).replace()</code> is equivalent to <code>REPLACE TABLE AS SELECT</code></li>
+<li><code>df.writeTo(t).append()</code> is equivalent to <code>INSERT INTO</code></li>
+<li><code>df.writeTo(t).overwritePartitions()</code> is equivalent to dynamic <code>INSERT OVERWRITE</code></li>
+</ul>
+</li>
+</ul>
+<p>The v1 DataFrame <code>write</code> API is still supported, but is not recommended.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>When writing with the v1 DataFrame API in Spark 3, use <code>saveAsTable</code> or <code>insertInto</code> to load tables with a catalog.
+Using <code>format("iceberg")</code> loads an isolated table reference that will not automatically refresh tables used by queries.</p>
+</div>
+<h3 id="appending-data">Appending data<a class="headerlink" href="#appending-data" title="Permanent link">&para;</a></h3>
+<p>To append a dataframe to an Iceberg table, use <code>append</code>:</p>
+<pre><code class="language-scala">val data: DataFrame = ...
+data.writeTo(&quot;prod.db.table&quot;).append()
+</code></pre>
+<h4 id="spark-24_1">Spark 2.4<a class="headerlink" href="#spark-24_1" title="Permanent link">&para;</a></h4>
+<p>In Spark 2.4, use the v1 API with <code>append</code> mode and <code>iceberg</code> format:</p>
+<pre><code class="language-scala">data.write
+    .format(&quot;iceberg&quot;)
+    .mode(&quot;append&quot;)
+    .save(&quot;db.table&quot;)
+</code></pre>
+<h3 id="overwriting-data">Overwriting data<a class="headerlink" href="#overwriting-data" title="Permanent link">&para;</a></h3>
+<p>To overwrite partitions dynamically, use <code>overwritePartitions()</code>:</p>
+<pre><code class="language-scala">val data: DataFrame = ...
+data.writeTo(&quot;prod.db.table&quot;).overwritePartitions()
+</code></pre>
+<p>To explicitly overwrite partitions, use <code>overwrite</code> to supply a filter:</p>
+<pre><code class="language-scala">data.writeTo(&quot;prod.db.table&quot;).overwrite($&quot;level&quot; === &quot;INFO&quot;)
+</code></pre>
+<h4 id="spark-24_2">Spark 2.4<a class="headerlink" href="#spark-24_2" title="Permanent link">&para;</a></h4>
+<p>In Spark 2.4, overwrite values in an Iceberg table with <code>overwrite</code> mode and <code>iceberg</code> format:</p>
+<pre><code class="language-scala">data.write
+    .format(&quot;iceberg&quot;)
+    .mode(&quot;overwrite&quot;)
+    .save(&quot;db.table&quot;)
+</code></pre>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p><strong>The behavior of overwrite mode changed between Spark 2.4 and Spark 3</strong>.</p>
+</div>
+<p>The behavior of DataFrameWriter overwrite mode was undefined in Spark 2.4, but is required to overwrite the entire table in Spark 3. Because of this new requirement, the Iceberg source&rsquo;s behavior changed in Spark 3. In Spark 2.4, the behavior was to dynamically overwrite partitions. To use the Spark 2.4 behavior, add option <code>overwrite-mode=dynamic</code>.</p>
+<h3 id="creating-tables">Creating tables<a class="headerlink" href="#creating-tables" title="Permanent link">&para;</a></h3>
+<p>To run a CTAS or RTAS, use <code>create</code>, <code>replace</code>, or <code>createOrReplace</code> operations:</p>
+<pre><code class="language-scala">val data: DataFrame = ...
+data.writeTo(&quot;prod.db.table&quot;).create()
+</code></pre>
+<p>Create and replace operations support table configuration methods, like <code>partitionedBy</code> and <code>tableProperty</code>:</p>
+<pre><code class="language-scala">data.writeTo(&quot;prod.db.table&quot;)
+    .tableProperty(&quot;write.format.default&quot;, &quot;orc&quot;)
+    .partitionBy($&quot;level&quot;, days($&quot;ts&quot;))
+    .createOrReplace()
+</code></pre>
+<h2 id="inspecting-tables">Inspecting tables<a class="headerlink" href="#inspecting-tables" title="Permanent link">&para;</a></h2>
+<p>To inspect a table&rsquo;s history, snapshots, and other metadata, Iceberg supports metadata tables.</p>
+<p>Metadata tables are identified by adding the metadata table name after the original table name. For example, history for <code>db.table</code> is read using <code>db.table.history</code>.</p>
+<h3 id="history">History<a class="headerlink" href="#history" title="Permanent link">&para;</a></h3>
+<p>To show table history, run:</p>
+<pre><code class="language-sql">SELECT * FROM prod.db.table.history
+</code></pre>
+<pre><code class="language-text">+-------------------------+---------------------+---------------------+---------------------+
+| made_current_at         | snapshot_id         | parent_id           | is_current_ancestor |
++-------------------------+---------------------+---------------------+---------------------+
+| 2019-02-08 03:29:51.215 | 5781947118336215154 | NULL                | true                |
+| 2019-02-08 03:47:55.948 | 5179299526185056830 | 5781947118336215154 | true                |
+| 2019-02-09 16:24:30.13  | 296410040247533544  | 5179299526185056830 | false               |
+| 2019-02-09 16:32:47.336 | 2999875608062437330 | 5179299526185056830 | true                |
+| 2019-02-09 19:42:03.919 | 8924558786060583479 | 2999875608062437330 | true                |
+| 2019-02-09 19:49:16.343 | 6536733823181975045 | 8924558786060583479 | true                |
++-------------------------+---------------------+---------------------+---------------------+
+</code></pre>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p><strong>This shows a commit that was rolled back.</strong> The example has two snapshots with the same parent, and one is <em>not</em> an ancestor of the current table state.</p>
+</div>
+<h3 id="snapshots">Snapshots<a class="headerlink" href="#snapshots" title="Permanent link">&para;</a></h3>
+<p>To show the valid snapshots for a table, run:</p>
+<pre><code class="language-sql">SELECT * FROM prod.db.table.snapshots
+</code></pre>
+<pre><code class="language-text">+-------------------------+----------------+-----------+-----------+----------------------------------------------------+-------------------------------------------------------+
+| committed_at            | snapshot_id    | parent_id | operation | manifest_list                                      | summary                                               |
++-------------------------+----------------+-----------+-----------+----------------------------------------------------+-------------------------------------------------------+
+| 2019-02-08 03:29:51.215 | 57897183625154 | null      | append    | s3://.../table/metadata/snap-57897183625154-1.avro | { added-records -&gt; 2478404, total-records -&gt; 2478404, |
+|                         |                |           |           |                                                    |   added-data-files -&gt; 438, total-data-files -&gt; 438,   |
+|                         |                |           |           |                                                    |   spark.app.id -&gt; application_1520379288616_155055 }  |
+| ...                     | ...            | ...       | ...       | ...                                                | ...                                                   |
++-------------------------+----------------+-----------+-----------+----------------------------------------------------+-------------------------------------------------------+
+</code></pre>
+<p>You can also join snapshots to table history. For example, this query will show table history, with the application ID that wrote each snapshot:</p>
+<pre><code class="language-sql">select
+    h.made_current_at,
+    s.operation,
+    h.snapshot_id,
+    h.is_current_ancestor,
+    s.summary['spark.app.id']
+from prod.db.table.history h
+join prod.db.table.snapshots s
+  on h.snapshot_id = s.snapshot_id
+order by made_current_at
+</code></pre>
+<pre><code class="language-text">+-------------------------+-----------+----------------+---------------------+----------------------------------+
+| made_current_at         | operation | snapshot_id    | is_current_ancestor | summary[spark.app.id]            |
++-------------------------+-----------+----------------+---------------------+----------------------------------+
+| 2019-02-08 03:29:51.215 | append    | 57897183625154 | true                | application_1520379288616_155055 |
+| 2019-02-09 16:24:30.13  | delete    | 29641004024753 | false               | application_1520379288616_151109 |
+| 2019-02-09 16:32:47.336 | append    | 57897183625154 | true                | application_1520379288616_155055 |
+| 2019-02-08 03:47:55.948 | overwrite | 51792995261850 | true                | application_1520379288616_152431 |
++-------------------------+-----------+----------------+---------------------+----------------------------------+
+</code></pre>
+<h3 id="manifests">Manifests<a class="headerlink" href="#manifests" title="Permanent link">&para;</a></h3>
+<p>To show a table&rsquo;s file manifests and each file&rsquo;s metadata, run:</p>
+<pre><code class="language-sql">SELECT * FROM prod.db.table.manifests
+</code></pre>
+<pre><code class="language-text">+----------------------------------------------------------------------+--------+-------------------+---------------------+------------------------+---------------------------+--------------------------+---------------------------------+
+| path                                                                 | length | partition_spec_id | added_snapshot_id   | added_data_files_count | existing_data_files_count | deleted_data_files_count | partitions                      |
++----------------------------------------------------------------------+--------+-------------------+---------------------+------------------------+---------------------------+--------------------------+---------------------------------+
+| s3://.../table/metadata/45b5290b-ee61-4788-b324-b1e2735c0e10-m0.avro | 4479   | 0                 | 6668963634911763636 | 8                      | 0                         | 0                        | [[false,2019-05-13,2019-05-15]] |
++----------------------------------------------------------------------+--------+-------------------+---------------------+------------------------+---------------------------+--------------------------+---------------------------------+
+</code></pre>
+<h3 id="files">Files<a class="headerlink" href="#files" title="Permanent link">&para;</a></h3>
+<p>To show a table&rsquo;s data files and each file&rsquo;s metadata, run:</p>
+<pre><code class="language-sql">SELECT * FROM prod.db.table.files
+</code></pre>
+<pre><code class="language-text">+-------------------------------------------------------------------------+-------------+--------------+--------------------+--------------------+------------------+-------------------+-----------------+-----------------+--------------+---------------+
+| file_path                                                               | file_format | record_count | file_size_in_bytes | column_sizes       | value_counts     | null_value_counts | lower_bounds    | upper_bounds    | key_metadata | split_offsets |
++-------------------------------------------------------------------------+-------------+--------------+--------------------+--------------------+------------------+-------------------+-----------------+-----------------+--------------+---------------+
+| s3:/.../table/data/00000-3-8d6d60e8-d427-4809-bcf0-f5d45a4aad96.parquet | PARQUET     | 1            | 597                | [1 -&gt; 90, 2 -&gt; 62] | [1 -&gt; 1, 2 -&gt; 1] | [1 -&gt; 0, 2 -&gt; 0]  | [1 -&gt; , 2 -&gt; c] | [1 -&gt; , 2 -&gt; c] | null         | [4]           |
+| s3:/.../table/data/00001-4-8d6d60e8-d427-4809-bcf0-f5d45a4aad96.parquet | PARQUET     | 1            | 597                | [1 -&gt; 90, 2 -&gt; 62] | [1 -&gt; 1, 2 -&gt; 1] | [1 -&gt; 0, 2 -&gt; 0]  | [1 -&gt; , 2 -&gt; b] | [1 -&gt; , 2 -&gt; b] | null         | [4]           |
+| s3:/.../table/data/00002-5-8d6d60e8-d427-4809-bcf0-f5d45a4aad96.parquet | PARQUET     | 1            | 597                | [1 -&gt; 90, 2 -&gt; 62] | [1 -&gt; 1, 2 -&gt; 1] | [1 -&gt; 0, 2 -&gt; 0]  | [1 -&gt; , 2 -&gt; a] | [1 -&gt; , 2 -&gt; a] | null         | [4]           |
++-------------------------------------------------------------------------+-------------+--------------+--------------------+--------------------+------------------+-------------------+-----------------+-----------------+--------------+---------------+
+</code></pre>
+<h3 id="inspecting-with-dataframes">Inspecting with DataFrames<a class="headerlink" href="#inspecting-with-dataframes" title="Permanent link">&para;</a></h3>
+<p>Metadata tables can be loaded in Spark 2.4 or Spark 3 using the DataFrameReader API:</p>
+<pre><code class="language-scala">// named metastore table
+spark.read.format(&quot;iceberg&quot;).load(&quot;db.table.files&quot;).show(truncate = false)
+// Hadoop path table
+spark.read.format(&quot;iceberg&quot;).load(&quot;hdfs://nn:8020/path/to/table#files&quot;).show(truncate = false)
+</code></pre></div>
+        
+        
+    </div>
+
+    
+      <footer class="col-md-12 text-center">
+          
+          
+            <hr>
+            <p>
+            <small>Copyright 2018-2020 <a href='https://www.apache.org/'>The Apache Software Foundation</a><br />Apache Iceberg, Iceberg, Apache, the Apache feather logo, and the Apache Iceberg project logo are either registered<br />trademarks or trademarks of The Apache Software Foundation in the United States and other countries.</small><br>
+            
+            <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</small>
+            </p>
+          
+
+          
+          
+      </footer>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="../js/bootstrap-3.0.3.min.js"></script>
+
+    
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js"></script>
+        
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    <script>var base_url = ".."</script>
+    
+    <script src="../js/base.js"></script>
+
+    <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+    </body>
+
+</html>

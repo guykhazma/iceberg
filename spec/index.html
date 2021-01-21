@@ -1,0 +1,2063 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A table format for large, slow-moving tabular data">
+    
+    
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    
+    <title>Spec - Apache Iceberg</title>
+    
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/v4-shims.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.min.css">
+    <link href='//rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="../css/base.min.css" rel="stylesheet">
+    <link href="../css/cinder.min.css" rel="stylesheet">
+
+    
+        
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/github.min.css">
+        
+    
+    <link href="../css/extra.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+        <![endif]-->
+
+    
+
+     
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+
+            
+              <a class="navbar-brand" href="..">Apache Iceberg</a>
+            
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">About</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Project <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../community/">Community</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../releases/">Releases</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../trademarks/">Trademarks</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../how-to-release/">How to Release</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">User docs <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../getting-started/">Getting Started</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../spark/">Spark</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../presto/">Presto</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../configuration/">Configuration</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../schemas/">Schemas</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../partitioning/">Partitioning</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../evolution/">Table evolution</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../performance/">Performance</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../reliability/">Reliability</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../spark#time-travel">Time Travel</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Java <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="https://github.com/apache/iceberg">Git Repo</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../java-api-quickstart/">Quickstart</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../api/">API intro</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="/javadoc/">Javadoc</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../custom-catalog/">Custom Catalog</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Python <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="https://github.com/apache/iceberg/tree/master/python">Git Repo</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../python-quickstart/">Quickstart</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../python-api-intro/">API Intro</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../python-feature-support/">Feature Support</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Format <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../terms/">Definitions</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">Spec</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="https://github.com/apache/iceberg">Iceberg on GitHub</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">ASF <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="https://www.apache.org/licenses/">License</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://www.apache.org/security/">Security</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://www.apache.org/foundation/thanks.html">Sponsors</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://www.apache.org/foundation/sponsorship.html">Donate</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://www.apache.org/events/current-event.html">Events</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                    <li >
+                        <a rel="prev" href="../terms/">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li class="disabled">
+                        <a rel="next" >
+                            Next <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="first-level active"><a href="#iceberg-table-spec">Iceberg Table Spec</a></li>
+            <li class="second-level"><a href="#version-1-analytic-data-tables">Version 1: Analytic Data Tables</a></li>
+                
+            <li class="second-level"><a href="#version-2-row-level-deletes">Version 2: Row-level Deletes</a></li>
+                
+            <li class="second-level"><a href="#goals">Goals</a></li>
+                
+            <li class="second-level"><a href="#overview">Overview</a></li>
+                
+                <li class="third-level"><a href="#mvcc-and-optimistic-concurrency">MVCC and Optimistic Concurrency</a></li>
+                <li class="third-level"><a href="#file-system-operations">File System Operations</a></li>
+            <li class="second-level"><a href="#specification">Specification</a></li>
+                
+                <li class="third-level"><a href="#terms">Terms</a></li>
+                <li class="third-level"><a href="#schemas-and-data-types">Schemas and Data Types</a></li>
+                <li class="third-level"><a href="#partitioning">Partitioning</a></li>
+                <li class="third-level"><a href="#manifests">Manifests</a></li>
+                <li class="third-level"><a href="#snapshots">Snapshots</a></li>
+                <li class="third-level"><a href="#table-metadata">Table Metadata</a></li>
+                <li class="third-level"><a href="#delete-formats">Delete Formats</a></li>
+            <li class="second-level"><a href="#appendix-a-format-specific-requirements">Appendix A: Format-specific Requirements</a></li>
+                
+                <li class="third-level"><a href="#avro">Avro</a></li>
+                <li class="third-level"><a href="#parquet">Parquet</a></li>
+                <li class="third-level"><a href="#orc">ORC</a></li>
+            <li class="second-level"><a href="#appendix-b-32-bit-hash-requirements">Appendix B: 32-bit Hash Requirements</a></li>
+                
+            <li class="second-level"><a href="#appendix-c-json-serialization">Appendix C: JSON serialization</a></li>
+                
+                <li class="third-level"><a href="#schemas">Schemas</a></li>
+                <li class="third-level"><a href="#partition-specs">Partition Specs</a></li>
+                <li class="third-level"><a href="#table-metadata-and-snapshots">Table Metadata and Snapshots</a></li>
+            <li class="second-level"><a href="#appendix-d-single-value-serialization">Appendix D: Single-value serialization</a></li>
+                
+            <li class="second-level"><a href="#format-version-changes">Format version changes</a></li>
+                
+                <li class="third-level"><a href="#version-2">Version 2</a></li>
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<!--
+ - Licensed to the Apache Software Foundation (ASF) under one or more
+ - contributor license agreements.  See the NOTICE file distributed with
+ - this work for additional information regarding copyright ownership.
+ - The ASF licenses this file to You under the Apache License, Version 2.0
+ - (the "License"); you may not use this file except in compliance with
+ - the License.  You may obtain a copy of the License at
+ -
+ -   http://www.apache.org/licenses/LICENSE-2.0
+ -
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS,
+ - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ - See the License for the specific language governing permissions and
+ - limitations under the License.
+ -->
+
+<h1 id="iceberg-table-spec">Iceberg Table Spec<a class="headerlink" href="#iceberg-table-spec" title="Permanent link">&para;</a></h1>
+<p>This is a specification for the Iceberg table format that is designed to manage a large, slow-changing collection of files in a distributed file system or key-value store as a table.</p>
+<h4 id="version-1-analytic-data-tables">Version 1: Analytic Data Tables<a class="headerlink" href="#version-1-analytic-data-tables" title="Permanent link">&para;</a></h4>
+<p><strong>Iceberg format version 1 is the current version</strong>. It defines how to manage large analytic tables using immutable file formats, like Parquet, Avro, and ORC.</p>
+<h4 id="version-2-row-level-deletes">Version 2: Row-level Deletes<a class="headerlink" href="#version-2-row-level-deletes" title="Permanent link">&para;</a></h4>
+<p>The Iceberg community is currently working on version 2 of the Iceberg format that supports encoding row-level deletes. <strong>The v2 specification is incomplete and may change until it is finished and adopted.</strong> This document includes tentative v2 format requirements, but there are currently no compatibility guarantees with the unfinished v2 spec.</p>
+<p>The goal of version 2 is to provide a way to encode row-level deletes. This update can be used to delete or replace individual rows in an immutable data file without rewriting the file.</p>
+<h2 id="goals">Goals<a class="headerlink" href="#goals" title="Permanent link">&para;</a></h2>
+<ul>
+<li><strong>Snapshot isolation</strong> &ndash; Reads will be isolated from concurrent writes and always use a committed snapshot of a table’s data. Writes will support removing and adding files in a single operation and are never partially visible. Readers will not acquire locks.</li>
+<li><strong>Speed</strong> &ndash; Operations will use O(1) remote calls to plan the files for a scan and not O(n) where n grows with the size of the table, like the number of partitions or files.</li>
+<li><strong>Scale</strong> &ndash; Job planning will be handled primarily by clients and not bottleneck on a central metadata store. Metadata will include information needed for cost-based optimization.</li>
+<li><strong>Evolution</strong> &ndash; Tables will support full schema and partition spec evolution. Schema evolution supports safe column add, drop, reorder and rename, including in nested structures.</li>
+<li><strong>Dependable types</strong> &ndash; Tables will provide well-defined and dependable support for a core set of types.</li>
+<li><strong>Storage separation</strong> &ndash; Partitioning will be table configuration. Reads will be planned using predicates on data values, not partition values. Tables will support evolving partition schemes.</li>
+<li><strong>Formats</strong> &ndash; Underlying data file formats will support identical schema evolution rules and types. Both read- and write-optimized formats will be available.</li>
+</ul>
+<h2 id="overview">Overview<a class="headerlink" href="#overview" title="Permanent link">&para;</a></h2>
+<p><img alt="Iceberg snapshot structure" class="floating" src="../img/iceberg-metadata.png" /></p>
+<p>This table format tracks individual data files in a table instead of directories. This allows writers to create data files in-place and only adds files to the table in an explicit commit.</p>
+<p>Table state is maintained in metadata files. All changes to table state create a new metadata file and replace the old metadata with an atomic swap. The table metadata file tracks the table schema, partitioning config, custom properties, and snapshots of the table contents. A snapshot represents the state of a table at some time and is used to access the complete set of data files in the table.</p>
+<p>Data files in snapshots are tracked by one or more manifest files that contain a row for each data file in the table, the file&rsquo;s partition data, and its metrics. The data in a snapshot is the union of all files in its manifests. Manifest files are reused across snapshots to avoid rewriting metadata that is slow-changing. Manifests can track data files with any subset of a table and are not associated with partitions.</p>
+<p>The manifests that make up a snapshot are stored in a manifest list file. Each manifest list stores metadata about manifests, including partition stats and data file counts. These stats are used to avoid reading manifests that are not required for an operation.</p>
+<h4 id="mvcc-and-optimistic-concurrency">MVCC and Optimistic Concurrency<a class="headerlink" href="#mvcc-and-optimistic-concurrency" title="Permanent link">&para;</a></h4>
+<p>An atomic swap of one table metadata file for another provides serializable isolation. Readers use the snapshot that was current when they load the table metadata and are not affected by changes until they refresh and pick up a new metadata location.</p>
+<p>Writers create table metadata files optimistically, assuming that the current version will not be changed before the writer&rsquo;s commit. Once a writer has created an update, it commits by swapping the table’s metadata file pointer from the base version to the new version.</p>
+<p>If the snapshot on which an update is based is no longer current, the writer must retry the update based on the new current version. Some operations support retry by re-applying metadata changes and committing, under well-defined conditions. For example, a change that rewrites files can be applied to a new table snapshot if all of the rewritten files are still in the table.</p>
+<h4 id="file-system-operations">File System Operations<a class="headerlink" href="#file-system-operations" title="Permanent link">&para;</a></h4>
+<p>Iceberg only requires that file systems support the following operations:</p>
+<ul>
+<li><strong>In-place write</strong> &ndash; Files are not moved or altered once they are written.</li>
+<li><strong>Seekable reads</strong> &ndash; Data file formats require seek support.</li>
+<li><strong>Deletes</strong> &ndash; Tables delete files that are no longer used.</li>
+</ul>
+<p>These requirements are compatible with object stores, like S3.</p>
+<p>Tables do not require random-access writes. Once written, data and metadata files are immutable until they are deleted.</p>
+<p>Tables do not require rename, except for tables that use atomic rename to implement the commit operation for new metadata files.</p>
+<h2 id="specification">Specification<a class="headerlink" href="#specification" title="Permanent link">&para;</a></h2>
+<h4 id="terms">Terms<a class="headerlink" href="#terms" title="Permanent link">&para;</a></h4>
+<ul>
+<li><strong>Schema</strong> &ndash; Names and types of fields in a table.</li>
+<li><strong>Partition spec</strong> &ndash; A definition of how partition values are derived from data fields.</li>
+<li><strong>Snapshot</strong> &ndash; The state of a table at some point in time, including the set of all data files.</li>
+<li><strong>Manifest</strong> &ndash; A file that lists data files; a subset of a snapshot.</li>
+<li><strong>Manifest list</strong> &ndash; A file that lists manifest files; one per snapshot.</li>
+</ul>
+<h3 id="schemas-and-data-types">Schemas and Data Types<a class="headerlink" href="#schemas-and-data-types" title="Permanent link">&para;</a></h3>
+<p>A table&rsquo;s <strong>schema</strong> is a list of named columns. All data types are either primitives or nested types, which are maps, lists, or structs. A table schema is also a struct type.</p>
+<p>For the representations of these types in Avro, ORC, and Parquet file formats, see Appendix A.</p>
+<h4 id="nested-types">Nested Types<a class="headerlink" href="#nested-types" title="Permanent link">&para;</a></h4>
+<p>A <strong><code>struct</code></strong> is a tuple of typed values. Each field in the tuple is named and has an integer id that is unique in the table schema. Each field can be either optional or required, meaning that values can (or cannot) be null. Fields may be any type. Fields may have an optional comment or doc string.</p>
+<p>A <strong><code>list</code></strong> is a collection of values with some element type. The element field has an integer id that is unique in the table schema. Elements can be either optional or required. Element types may be any type.</p>
+<p>A <strong><code>map</code></strong> is a collection of key-value pairs with a key type and a value type. Both the key field and value field each have an integer id that is unique in the table schema. Map keys are required and map values can be either optional or required. Both map keys and map values may be any type, including nested types.</p>
+<h4 id="primitive-types">Primitive Types<a class="headerlink" href="#primitive-types" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Primitive type</th>
+<th>Description</th>
+<th>Requirements</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>boolean</code></strong></td>
+<td>True or false</td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>int</code></strong></td>
+<td>32-bit signed integers</td>
+<td>Can promote to <code>long</code></td>
+</tr>
+<tr>
+<td><strong><code>long</code></strong></td>
+<td>64-bit signed integers</td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>float</code></strong></td>
+<td><a href="https://en.wikipedia.org/wiki/IEEE_754">32-bit IEEE 754</a> floating point</td>
+<td>Can promote to double</td>
+</tr>
+<tr>
+<td><strong><code>double</code></strong></td>
+<td><a href="https://en.wikipedia.org/wiki/IEEE_754">64-bit IEEE 754</a> floating point</td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>decimal(P,S)</code></strong></td>
+<td>Fixed-point decimal; precision P, scale S</td>
+<td>Scale is fixed [1], precision must be 38 or less</td>
+</tr>
+<tr>
+<td><strong><code>date</code></strong></td>
+<td>Calendar date without timezone or time</td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>time</code></strong></td>
+<td>Time of day without date, timezone</td>
+<td>Microsecond precision [2]</td>
+</tr>
+<tr>
+<td><strong><code>timestamp</code></strong></td>
+<td>Timestamp without timezone</td>
+<td>Microsecond precision [2]</td>
+</tr>
+<tr>
+<td><strong><code>timestamptz</code></strong></td>
+<td>Timestamp with timezone</td>
+<td>Stored as UTC [2]</td>
+</tr>
+<tr>
+<td><strong><code>string</code></strong></td>
+<td>Arbitrary-length character sequences</td>
+<td>Encoded with UTF-8 [3]</td>
+</tr>
+<tr>
+<td><strong><code>uuid</code></strong></td>
+<td>Universally unique identifiers</td>
+<td>Should use 16-byte fixed</td>
+</tr>
+<tr>
+<td><strong><code>fixed(L)</code></strong></td>
+<td>Fixed-length byte array of length L</td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>binary</code></strong></td>
+<td>Arbitrary-length byte array</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<ol>
+<li>Decimal scale is fixed and cannot be changed by schema evolution. Precision can only be widened.</li>
+<li>All time and timestamp values are stored with microsecond precision.
+Timestamps <em>with time zone</em> represent a point in time: values are stored as UTC and do not retain a source time zone (<code>2017-11-16 17:10:34 PST</code> is stored/retrieved as <code>2017-11-17 01:10:34 UTC</code> and these values are considered identical).
+Timestamps <em>without time zone</em> represent a date and time of day regardless of zone: the time value is independent of zone adjustments (<code>2017-11-16 17:10:34</code> is always retrieved as <code>2017-11-16 17:10:34</code>). Timestamp values are stored as a long that encodes microseconds from the unix epoch.</li>
+<li>Character strings must be stored as UTF-8 encoded byte arrays.</li>
+</ol>
+<p>For details on how to serialize a schema to JSON, see Appendix C.</p>
+<h4 id="schema-evolution">Schema Evolution<a class="headerlink" href="#schema-evolution" title="Permanent link">&para;</a></h4>
+<p>Schema evolution is limited to type promotion and adding, deleting, and renaming fields in structs (both nested structs and the top-level schema’s struct).</p>
+<p>Valid type promotions are:</p>
+<ul>
+<li><code>int</code> to <code>long</code></li>
+<li><code>float</code> to <code>double</code></li>
+<li><code>decimal(P, S)</code> to <code>decimal(P', S)</code> if <code>P' &gt; P</code> &ndash; widen the precision of decimal types.</li>
+</ul>
+<p>Any struct, including a top-level schema, can evolve through deleting fields, adding new fields, renaming existing fields, or promoting a primitive using the valid type promotions. Adding a new field assigns a new ID for that field and for any nested fields. Renaming an existing field must change the name, but not the field ID. Deleting a field removes it from the current schema. Field deletion cannot be rolled back unless the field was nullable or if the current snapshot has not changed.</p>
+<p>Grouping a subset of a struct’s fields into a nested struct is <strong>not</strong> allowed, nor is moving fields from a nested struct into its immediate parent struct (<code>struct&lt;a, b, c&gt; ↔ struct&lt;a, struct&lt;b, c&gt;&gt;</code>). Evolving primitive types to structs is <strong>not</strong> allowed, nor is evolving a single-field struct to a primitive (<code>map&lt;string, int&gt; ↔ map&lt;string, struct&lt;int&gt;&gt;</code>).</p>
+<h3 id="partitioning">Partitioning<a class="headerlink" href="#partitioning" title="Permanent link">&para;</a></h3>
+<p>Data files are stored in manifests with a tuple of partition values that are used in scans to filter out files that cannot contain records that match the scan’s filter predicate. Partition values for a data file must be the same for all records stored in the data file. (Manifests store data files from any partition, as long as the partition spec is the same for the data files.)</p>
+<p>Tables are configured with a <strong>partition spec</strong> that defines how to produce a tuple of partition values from a record. A partition spec has a list of fields that consist of:</p>
+<ul>
+<li>A <strong>source column id</strong> from the table’s schema</li>
+<li>A <strong>partition field id</strong> that is used to identify a partition field, which is unique within a partition spec. In v2 table metadata, it will be unique across all partition specs.</li>
+<li>A <strong>transform</strong> that is applied to the source column to produce a partition value</li>
+<li>A <strong>partition name</strong></li>
+</ul>
+<p>The source column, selected by id, must be a primitive type and cannot be contained in a map or list, but may be nested in a struct. For details on how to serialize a partition spec to JSON, see Appendix C.</p>
+<p>Partition specs capture the transform from table data to partition values. This is used to transform predicates to partition predicates, in addition to transforming data values. Deriving partition predicates from column predicates on the table data is used to separate the logical queries from physical storage: the partitioning can change and the correct partition filters are always derived from column predicates. This simplifies queries because users don’t have to supply both logical predicates and partition predicates. For more information, see Scan Planning below.</p>
+<h4 id="partition-transforms">Partition Transforms<a class="headerlink" href="#partition-transforms" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th>Transform</th>
+<th>Description</th>
+<th>Source types</th>
+<th>Result type</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>identity</code></strong></td>
+<td>Source value, unmodified</td>
+<td>Any</td>
+<td>Source type</td>
+</tr>
+<tr>
+<td><strong><code>bucket[N]</code></strong></td>
+<td>Hash of value, mod <code>N</code> (see below)</td>
+<td><code>int</code>, <code>long</code>, <code>decimal</code>, <code>date</code>, <code>time</code>, <code>timestamp</code>, <code>timestamptz</code>, <code>string</code>, <code>uuid</code>, <code>fixed</code>, <code>binary</code></td>
+<td><code>int</code></td>
+</tr>
+<tr>
+<td><strong><code>truncate[W]</code></strong></td>
+<td>Value truncated to width <code>W</code> (see below)</td>
+<td><code>int</code>, <code>long</code>, <code>decimal</code>, <code>string</code></td>
+<td>Source type</td>
+</tr>
+<tr>
+<td><strong><code>year</code></strong></td>
+<td>Extract a date or timestamp year, as years from 1970</td>
+<td><code>date</code>, <code>timestamp(tz)</code></td>
+<td><code>int</code></td>
+</tr>
+<tr>
+<td><strong><code>month</code></strong></td>
+<td>Extract a date or timestamp month, as months from 1970-01-01</td>
+<td><code>date</code>, <code>timestamp(tz)</code></td>
+<td><code>int</code></td>
+</tr>
+<tr>
+<td><strong><code>day</code></strong></td>
+<td>Extract a date or timestamp day, as days from 1970-01-01</td>
+<td><code>date</code>, <code>timestamp(tz)</code></td>
+<td><code>date</code></td>
+</tr>
+<tr>
+<td><strong><code>hour</code></strong></td>
+<td>Extract a timestamp hour, as hours from 1970-01-01 00:00:00</td>
+<td><code>timestamp(tz)</code></td>
+<td><code>int</code></td>
+</tr>
+</tbody>
+</table>
+<p>All transforms must return <code>null</code> for a <code>null</code> input value.</p>
+<h4 id="bucket-transform-details">Bucket Transform Details<a class="headerlink" href="#bucket-transform-details" title="Permanent link">&para;</a></h4>
+<p>Bucket partition transforms use a 32-bit hash of the source value. The 32-bit hash implementation is the 32-bit Murmur3 hash, x86 variant, seeded with 0.</p>
+<p>Transforms are parameterized by a number of buckets [1], <code>N</code>. The hash mod <code>N</code> must produce a positive value by first discarding the sign bit of the hash value. In pseudo-code, the function is:</p>
+<pre><code>  def bucket_N(x) = (murmur3_x86_32_hash(x) &amp; Integer.MAX_VALUE) % N
+</code></pre>
+<p>Notes:</p>
+<ol>
+<li>Changing the number of buckets as a table grows is possible by evolving the partition spec.</li>
+</ol>
+<p>For hash function details by type, see Appendix B.</p>
+<h4 id="truncate-transform-details">Truncate Transform Details<a class="headerlink" href="#truncate-transform-details" title="Permanent link">&para;</a></h4>
+<table>
+<thead>
+<tr>
+<th><strong>Type</strong></th>
+<th><strong>Config</strong></th>
+<th><strong>Truncate specification</strong></th>
+<th><strong>Examples</strong></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>int</code></strong></td>
+<td><code>W</code>, width</td>
+<td><code>v - (v % W)</code> remainders must be positive [1]</td>
+<td><code>W=10</code>: <code>1</code> ￫ <code>0</code>, <code>-1</code> ￫ <code>-10</code></td>
+</tr>
+<tr>
+<td><strong><code>long</code></strong></td>
+<td><code>W</code>, width</td>
+<td><code>v - (v % W)</code> remainders must be positive [1]</td>
+<td><code>W=10</code>: <code>1</code> ￫ <code>0</code>, <code>-1</code> ￫ <code>-10</code></td>
+</tr>
+<tr>
+<td><strong><code>decimal</code></strong></td>
+<td><code>W</code>, width (no scale)</td>
+<td><code>scaled_W = decimal(W, scale(v))</code> <code>v - (v % scaled_W)</code>        [1, 2]</td>
+<td><code>W=50</code>, <code>s=2</code>: <code>10.65</code> ￫ <code>10.50</code></td>
+</tr>
+<tr>
+<td><strong><code>string</code></strong></td>
+<td><code>L</code>, length</td>
+<td>Substring of length <code>L</code>: <code>v.substring(0, L)</code></td>
+<td><code>L=3</code>: <code>iceberg</code> ￫ <code>ice</code></td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<ol>
+<li>The remainder, <code>v % W</code>, must be positive. For languages where <code>%</code> can produce negative values, the correct truncate function is: <code>v - (((v % W) + W) % W)</code></li>
+<li>The width, <code>W</code>, used to truncate decimal values is applied using the scale of the decimal column to avoid additional (and potentially conflicting) parameters.</li>
+</ol>
+<h3 id="manifests">Manifests<a class="headerlink" href="#manifests" title="Permanent link">&para;</a></h3>
+<p>A manifest is an immutable Avro file that lists a set of data files, along with each file’s partition data tuple, metrics, and tracking information. One or more manifest files are used to store a snapshot, which tracks all of the files in a table at some point in time.</p>
+<p>A manifest is a valid Iceberg data file. Files must use Iceberg schemas and column projection.</p>
+<p>A manifest stores files for a single partition spec. When a table’s partition spec changes, old files remain in the older manifest and newer files are written to a new manifest. This is required because a manifest file’s schema is based on its partition spec (see below). This restriction also simplifies selecting files from a manifest because the same boolean expression can be used to select or filter all rows.</p>
+<p>The partition spec for a manifest and the current table schema must be stored in the key-value properties of the manifest file. The partition spec is stored as a JSON string under the key <code>partition-spec</code>. The table schema is stored as a JSON string under the key <code>schema</code>.</p>
+<p>The schema of a manifest file is a struct called <code>manifest_entry</code> with the following fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field id, name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>0  status</code></strong></td>
+<td><code>int</code> with meaning: <code>0: EXISTING</code> <code>1: ADDED</code> <code>2: DELETED</code></td>
+<td>Used to track additions and deletions</td>
+</tr>
+<tr>
+<td><strong><code>1  snapshot_id</code></strong></td>
+<td><code>long</code></td>
+<td>Snapshot id where the file was added, or deleted if status is 2</td>
+</tr>
+<tr>
+<td><strong><code>2  data_file</code></strong></td>
+<td><code>data_file</code> <code>struct</code> (see below)</td>
+<td>File path, partition tuple, metrics, &hellip;</td>
+</tr>
+</tbody>
+</table>
+<p><code>data_file</code> is a struct with the following fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field id, name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>100  file_path</code></strong></td>
+<td><code>string</code></td>
+<td>Full URI for the file with FS scheme</td>
+</tr>
+<tr>
+<td><strong><code>101  file_format</code></strong></td>
+<td><code>string</code></td>
+<td>String file format name, avro, orc or parquet</td>
+</tr>
+<tr>
+<td><strong><code>102  partition</code></strong></td>
+<td><code>struct&lt;...&gt;</code></td>
+<td>Partition data tuple, schema based on the partition spec</td>
+</tr>
+<tr>
+<td><strong><code>103  record_count</code></strong></td>
+<td><code>long</code></td>
+<td>Number of records in this file</td>
+</tr>
+<tr>
+<td><strong><code>104  file_size_in_bytes</code></strong></td>
+<td><code>long</code></td>
+<td>Total file size in bytes</td>
+</tr>
+<tr>
+<td><del><strong><code>105 block_size_in_bytes</code></strong></del></td>
+<td><code>long</code></td>
+<td><strong>Deprecated. Always write a default value and do not read.</strong></td>
+</tr>
+<tr>
+<td><del><strong><code>106  file_ordinal</code></strong></del></td>
+<td><code>optional int</code></td>
+<td><strong>Deprecated. Do not use.</strong></td>
+</tr>
+<tr>
+<td><del><strong><code>107  sort_columns</code></strong></del></td>
+<td><code>optional list</code></td>
+<td><strong>Deprecated. Do not use.</strong></td>
+</tr>
+<tr>
+<td><strong><code>108  column_sizes</code></strong></td>
+<td><code>optional map</code></td>
+<td>Map from column id to the total size on disk of all regions that store the column. Does not include bytes necessary to read other columns, like footers. Leave null for row-oriented formats (Avro).</td>
+</tr>
+<tr>
+<td><strong><code>109  value_counts</code></strong></td>
+<td><code>optional map</code></td>
+<td>Map from column id to number of values in the column (including null values)</td>
+</tr>
+<tr>
+<td><strong><code>110  null_value_counts</code></strong></td>
+<td><code>optional map</code></td>
+<td>Map from column id to number of null values in the column</td>
+</tr>
+<tr>
+<td><del><strong><code>111 distinct_counts</code></strong></del></td>
+<td><code>optional map</code></td>
+<td><strong>Deprecated. Do not use.</strong></td>
+</tr>
+<tr>
+<td><strong><code>125  lower_bounds</code></strong></td>
+<td><code>optional map&lt;126: int, 127: binary&gt;</code></td>
+<td>Map from column id to lower bound in the column serialized as binary [1]. Each value must be less than or equal to all values in the column for the file.</td>
+</tr>
+<tr>
+<td><strong><code>128  upper_bounds</code></strong></td>
+<td><code>optional map&lt;129: int, 130: binary&gt;</code></td>
+<td>Map from column id to upper bound in the column serialized as binary [1]. Each value must be greater than or equal to all values in the column for the file.</td>
+</tr>
+<tr>
+<td><strong><code>131  key_metadata</code></strong></td>
+<td><code>optional binary</code></td>
+<td>Implementation-specific key metadata for encryption</td>
+</tr>
+<tr>
+<td><strong><code>132  split_offsets</code></strong></td>
+<td><code>optional list</code></td>
+<td>Split offsets for the data file. For example, all row group offsets in a Parquet file. Must be sorted ascending.</td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<ol>
+<li>Single-value serialization for lower and upper bounds is detailed in Appendix D.</li>
+</ol>
+<p>The <code>partition</code> struct stores the tuple of partition values for each file. Its type is derived from the partition fields of the partition spec for the manifest file.</p>
+<p>Each manifest file must store its partition spec and the current table schema in the Avro file’s key-value metadata. The partition spec is used to transform predicates on the table’s data rows into predicates on the manifest’s partition values during job planning.</p>
+<h4 id="manifest-entry-fields">Manifest Entry Fields<a class="headerlink" href="#manifest-entry-fields" title="Permanent link">&para;</a></h4>
+<p>The manifest entry fields are used to keep track of the snapshot in which files were added or logically deleted. The <code>data_file</code> struct is nested inside of the manifest entry so that it can be easily passed to job planning without the manifest entry fields.</p>
+<p>When a data file is added to the dataset, it’s manifest entry should store the snapshot ID in which the file was added and set status to 1 (added).</p>
+<p>When a data file is replaced or deleted from the dataset, it’s manifest entry fields store the snapshot ID in which the file was deleted and status 2 (deleted). The file may be deleted from the file system when the snapshot in which it was deleted is garbage collected, assuming that older snapshots have also been garbage collected [1].</p>
+<p>Notes:</p>
+<ol>
+<li>Technically, data files can be deleted when the last snapshot that contains the file as “live” data is garbage collected. But this is harder to detect and requires finding the diff of multiple snapshots. It is easier to track what files are deleted in a snapshot and delete them when that snapshot expires.</li>
+</ol>
+<h3 id="snapshots">Snapshots<a class="headerlink" href="#snapshots" title="Permanent link">&para;</a></h3>
+<p>A snapshot consists of the following fields:</p>
+<ul>
+<li><strong><code>snapshot-id</code></strong> &ndash; A unique long ID.</li>
+<li><strong><code>parent-snapshot-id</code></strong> &ndash; (Optional) The snapshot ID of the snapshot’s parent. This field is not present for snapshots that have no parent snapshot, such as snapshots created before this field was added or the first snapshot of a table.</li>
+<li><strong><code>sequence-number</code></strong> &ndash; A monotonically increasing long that tracks the order of snapshots in a table. (<strong>v2 only</strong>)</li>
+<li><strong><code>timestamp-ms</code></strong> &ndash; A timestamp when the snapshot was created. This is used when garbage collecting snapshots.</li>
+<li><strong><code>manifests</code></strong> &ndash; A list of manifest file locations. The data files in a snapshot are the union of all data files listed in these manifests. (Deprecated in favor of <code>manifest-list</code>)</li>
+<li><strong><code>manifest-list</code></strong> &ndash; (Optional) The location of a manifest list file for this snapshot, which contains a list of manifest files with additional metadata. If present, the manifests field must be omitted.</li>
+<li><strong><code>summary</code></strong> &ndash; (Optional) A summary that encodes the <code>operation</code> that produced the snapshot and other relevant information specific to that operation. This allows some operations like snapshot expiration to skip processing some snapshots. Possible values of <code>operation</code> are:<ul>
+<li><code>append</code> &ndash; Data files were added and no files were removed.</li>
+<li><code>replace</code> &ndash; Data files were rewritten with the same data; i.e., compaction, changing the data file format, or relocating data files.</li>
+<li><code>overwrite</code> &ndash; Data files were deleted and added in a logical overwrite operation.</li>
+<li><code>delete</code> &ndash; Data files were removed and their contents logically deleted.</li>
+</ul>
+</li>
+</ul>
+<p>Snapshots can be split across more than one manifest. This enables:</p>
+<ul>
+<li>Appends can add a new manifest to minimize the amount of data written, instead of adding new records by rewriting and appending to an existing manifest. (This is called a “fast append”.)</li>
+<li>Tables can use multiple partition specs. A table’s partition configuration can evolve if, for example, its data volume changes. Each manifest uses a single partition spec, and queries do not need to change because partition filters are derived from data predicates.</li>
+<li>Large tables can be split across multiple manifests so that implementations can parallelize job planning or reduce the cost of rewriting a manifest.</li>
+</ul>
+<p>Valid snapshots are stored as a list in table metadata. For serialization, see Appendix C.</p>
+<h4 id="scan-planning">Scan Planning<a class="headerlink" href="#scan-planning" title="Permanent link">&para;</a></h4>
+<p>Scans are planned by reading the manifest files for the current snapshot listed in the table metadata. Deleted entries in a manifest are not included in the scan.</p>
+<p>For each manifest, scan predicates, which filter data rows, are converted to partition predicates, which filter data files. These partition predicates are used to select the data files in the manifest. This conversion uses the partition spec used to write the manifest file.</p>
+<p>Scan predicates are converted to partition predicates using an inclusive projection: if a scan predicate matches a row, then the partition predicate must match that row’s partition. This is an <em>inclusive projection</em> [1] because rows that do not match the scan predicate may be included in the scan by the partition predicate.</p>
+<p>For example, an <code>events</code> table with a timestamp column named <code>ts</code> that is partitioned by <code>ts_day=day(ts)</code> is queried by users with ranges over the timestamp column: <code>ts &gt; X</code>. The inclusive projection is <code>ts_day &gt;= day(X)</code>, which is used to select files that may have matching rows. Note that, in most cases, timestamps just before <code>X</code> will be included in the scan because the file contains rows that match the predicate and rows that do not match the predicate.</p>
+<p>Notes:</p>
+<ol>
+<li>An alternative, <em>strict projection</em>, creates a partition predicate that will match a file if all of the rows in the file must match the scan predicate. These projections are used to calculate the residual predicates for each file in a scan.</li>
+</ol>
+<h4 id="manifest-lists">Manifest Lists<a class="headerlink" href="#manifest-lists" title="Permanent link">&para;</a></h4>
+<p>Snapshots are embedded in table metadata, but the list of manifests for a snapshot can be stored in a separate manifest list file.</p>
+<p>A manifest list encodes extra fields that can be used to avoid scanning all of the manifests in a snapshot when planning a table scan. </p>
+<p>Manifest list files store <code>manifest_file</code>, a struct with the following fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field id, name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>500 manifest_path</code></strong></td>
+<td><code>string</code></td>
+<td>Location of the manifest file</td>
+</tr>
+<tr>
+<td><strong><code>501 manifest_length</code></strong></td>
+<td><code>long</code></td>
+<td>Length of the manifest file</td>
+</tr>
+<tr>
+<td><strong><code>502 partition_spec_id</code></strong></td>
+<td><code>int</code></td>
+<td>ID of a partition spec for the table; must be listed in table metadata <code>partition-specs</code></td>
+</tr>
+<tr>
+<td><strong><code>503 added_snapshot_id</code></strong></td>
+<td><code>long</code></td>
+<td>ID of the snapshot where the  manifest file was added</td>
+</tr>
+<tr>
+<td><strong><code>504 added_files_count</code></strong></td>
+<td><code>int</code></td>
+<td>Number of entries in the manifest that have status <code>ADDED</code> (1)</td>
+</tr>
+<tr>
+<td><strong><code>505 existing_files_count</code></strong></td>
+<td><code>int</code></td>
+<td>Number of entries in the manifest that have status <code>EXISTING</code> (0)</td>
+</tr>
+<tr>
+<td><strong><code>506 deleted_files_count</code></strong></td>
+<td><code>int</code></td>
+<td>Number of entries in the manifest that have status <code>DELETED</code> (2)</td>
+</tr>
+<tr>
+<td><strong><code>507 partitions</code></strong></td>
+<td><code>list&lt;508: field_summary&gt;</code> (see below)</td>
+<td>A list of field summaries for each partition field in the spec. Each field in the list corresponds to a field in the manifest file’s partition spec.</td>
+</tr>
+<tr>
+<td><strong><code>512 added_rows_count</code></strong></td>
+<td><code>long</code></td>
+<td>Number of rows in all of files in the manifest that have status <code>ADDED</code></td>
+</tr>
+<tr>
+<td><strong><code>513 existing_rows_count</code></strong></td>
+<td><code>long</code></td>
+<td>Number of rows in all of files in the manifest that have status <code>EXISTING</code></td>
+</tr>
+<tr>
+<td><strong><code>514 deleted_rows_count</code></strong></td>
+<td><code>long</code></td>
+<td>Number of rows in all of files in the manifest that have status <code>DELETED</code></td>
+</tr>
+</tbody>
+</table>
+<p><code>field_summary</code> is a struct with the following fields</p>
+<table>
+<thead>
+<tr>
+<th>Field id, name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>509 contains_null</code></strong></td>
+<td><code>boolean</code></td>
+<td>Whether the manifest contains at least one partition with a null value for the field.</td>
+</tr>
+<tr>
+<td><strong><code>510 lower_bound</code></strong></td>
+<td><code>optional bytes</code>    [1]</td>
+<td>Lower bound for the non-null values in the partition field, or null if all values are null.</td>
+</tr>
+<tr>
+<td><strong><code>511 upper_bound</code></strong></td>
+<td><code>optional bytes</code>    [1]</td>
+<td>Upper bound for the non-null values in the partition field, or null if all values are null.</td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<ol>
+<li>Lower and upper bounds are serialized to bytes using the single-object serialization in Appendix D. The type of used to encode the value is the type of the partition field data.</li>
+</ol>
+<h3 id="table-metadata">Table Metadata<a class="headerlink" href="#table-metadata" title="Permanent link">&para;</a></h3>
+<p>Table metadata is stored as JSON. Each table metadata change creates a new table metadata file that is committed by an atomic operation. This operation is used to ensure that a new version of table metadata replaces the version on which it was based. This produces a linear history of table versions and ensures that concurrent writes are not lost.</p>
+<p>The atomic operation used to commit metadata depends on how tables are tracked and is not standardized by this spec. See the sections below for examples.</p>
+<h4 id="table-metadata-fields">Table Metadata Fields<a class="headerlink" href="#table-metadata-fields" title="Permanent link">&para;</a></h4>
+<p>Table metadata consists of the following fields:</p>
+<table>
+<thead>
+<tr>
+<th>Format v1</th>
+<th>Format v2</th>
+<th>Field</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><em>required</em></td>
+<td><em>required</em></td>
+<td><strong><code>format-version</code></strong></td>
+<td>An integer version number for the format. Currently, this is always 1. Implementations must throw an exception if a table&rsquo;s version is higher than the supported version.</td>
+</tr>
+<tr>
+<td><em>optional</em></td>
+<td><em>required</em></td>
+<td><strong><code>table-uuid</code></strong></td>
+<td>A UUID that identifies the table, generated when the table is created. Implementations must throw an exception if a table&rsquo;s UUID does not match the expected UUID after refreshing metadata.</td>
+</tr>
+<tr>
+<td><em>required</em></td>
+<td><em>required</em></td>
+<td><strong><code>location</code></strong></td>
+<td>The table&rsquo;s base location. This is used by writers to determine where to store data files, manifest files, and table metadata files.</td>
+</tr>
+<tr>
+<td><em>omitted</em></td>
+<td><em>required</em></td>
+<td><strong><code>sequence-number</code></strong></td>
+<td>The table&rsquo;s highest assigned sequence number, a monotonically increasing long that tracks the order of snapshots in a table.</td>
+</tr>
+<tr>
+<td><em>required</em></td>
+<td><em>required</em></td>
+<td><strong><code>last-updated-ms</code></strong></td>
+<td>Timestamp in milliseconds from the unix epoch when the table was last updated. Each table metadata file should update this field just before writing.</td>
+</tr>
+<tr>
+<td><em>required</em></td>
+<td><em>required</em></td>
+<td><strong><code>last-column-id</code></strong></td>
+<td>An integer; the highest assigned column ID for the table. This is used to ensure columns are always assigned an unused ID when evolving schemas.</td>
+</tr>
+<tr>
+<td><em>required</em></td>
+<td><em>required</em></td>
+<td><strong><code>schema</code></strong></td>
+<td>The table’s current schema.</td>
+</tr>
+<tr>
+<td><em>required</em></td>
+<td><em>omitted</em></td>
+<td><strong><code>partition-spec</code></strong></td>
+<td>The table’s current partition spec, stored as only fields. Note that this is used by writers to partition data, but is not used when reading because reads use the specs stored in manifest files. (<strong>Deprecated</strong>: use <code>partition-specs</code> and <code>default-spec-id</code>instead )</td>
+</tr>
+<tr>
+<td><em>optional</em></td>
+<td><em>required</em></td>
+<td><strong><code>partition-specs</code></strong></td>
+<td>A list of partition specs, stored as full partition spec objects.</td>
+</tr>
+<tr>
+<td><em>optional</em></td>
+<td><em>required</em></td>
+<td><strong><code>default-spec-id</code></strong></td>
+<td>ID of the “current” spec that writers should use by default.</td>
+</tr>
+<tr>
+<td><em>optional</em></td>
+<td><em>optional</em></td>
+<td><strong><code>properties</code></strong></td>
+<td>A string to string map of table properties. This is used to control settings that affect reading and writing and is not intended to be used for arbitrary metadata. For example, <code>commit.retry.num-retries</code> is used to control the number of commit retries.</td>
+</tr>
+<tr>
+<td><em>optional</em></td>
+<td><em>optional</em></td>
+<td><strong><code>current-snapshot-id</code></strong></td>
+<td><code>long</code> ID of the current table snapshot.</td>
+</tr>
+<tr>
+<td><em>optional</em></td>
+<td><em>optional</em></td>
+<td><strong><code>snapshots</code></strong></td>
+<td>A list of valid snapshots. Valid snapshots are snapshots for which all data files exist in the file system. A data file must not be deleted from the file system until the last snapshot in which it was listed is garbage collected.</td>
+</tr>
+<tr>
+<td><em>optional</em></td>
+<td><em>optional</em></td>
+<td><strong><code>snapshot-log</code></strong></td>
+<td>A list (optional) of timestamp and snapshot ID pairs that encodes changes to the current snapshot for the table. Each time the current-snapshot-id is changed, a new entry should be added with the last-updated-ms and the new current-snapshot-id. When snapshots are expired from the list of valid snapshots, all entries before a snapshot that has expired should be removed.</td>
+</tr>
+</tbody>
+</table>
+<p>For serialization details, see Appendix C.</p>
+<h4 id="commit-conflict-resolution-and-retry">Commit Conflict Resolution and Retry<a class="headerlink" href="#commit-conflict-resolution-and-retry" title="Permanent link">&para;</a></h4>
+<p>When two commits happen at the same time and are based on the same version, only one commit will succeed. In most cases, the failed commit can be applied to the new current version of table metadata and retried. Updates verify the conditions under which they can be applied to a new version and retry if those conditions are met.</p>
+<ul>
+<li>Append operations have no requirements and can always be applied.</li>
+<li>Replace operations must verify that the files that will be deleted are still in the table. Examples of replace operations include format changes (replace an Avro file with a Parquet file) and compactions (several files are replaced with a single file that contains the same rows).</li>
+<li>Delete operations must verify that specific files to delete are still in the table. Delete operations based on expressions can always be applied (e.g., where timestamp &lt; X).</li>
+<li>Table schema updates and partition spec changes must validate that the schema has not changed between the base version and the current version.</li>
+</ul>
+<h4 id="file-system-tables">File System Tables<a class="headerlink" href="#file-system-tables" title="Permanent link">&para;</a></h4>
+<p>An atomic swap can be implemented using atomic rename in file systems that support it, like HDFS or most local file systems [1].</p>
+<p>Each version of table metadata is stored in a metadata folder under the table’s base location using a file naming scheme that includes a version number, <code>V</code>: <code>v&lt;V&gt;.metadata.json</code>. To commit a new metadata version, <code>V+1</code>, the writer performs the following steps:</p>
+<ol>
+<li>Read the current table metadata version <code>V</code>.</li>
+<li>Create new table metadata based on version <code>V</code>.</li>
+<li>Write the new table metadata to a unique file: <code>&lt;random-uuid&gt;.metadata.json</code>.</li>
+<li>Rename the unique file to the well-known file for version <code>V</code>: <code>v&lt;V+1&gt;.metadata.json</code>.<ol>
+<li>If the rename succeeds, the commit succeeded and <code>V+1</code> is the table’s current version</li>
+<li>If the rename fails, go back to step 1.</li>
+</ol>
+</li>
+</ol>
+<p>Notes:</p>
+<ol>
+<li>The file system table scheme is implemented in <a href="/javadoc/master/index.html?org/apache/iceberg/hadoop/HadoopTableOperations.html">HadoopTableOperations</a>.</li>
+</ol>
+<h4 id="metastore-tables">Metastore Tables<a class="headerlink" href="#metastore-tables" title="Permanent link">&para;</a></h4>
+<p>The atomic swap needed to commit new versions of table metadata can be implemented by storing a pointer in a metastore or database that is updated with a check-and-put operation [1]. The check-and-put validates that the version of the table that a write is based on is still current and then makes the new metadata from the write the current version.</p>
+<p>Each version of table metadata is stored in a metadata folder under the table’s base location using a naming scheme that includes a version and UUID: <code>&lt;V&gt;-&lt;uuid&gt;.metadata.json</code>. To commit a new metadata version, <code>V+1</code>, the writer performs the following steps:</p>
+<ol start="2">
+<li>Create a new table metadata file based on the current metadata.</li>
+<li>Write the new table metadata to a unique file: <code>&lt;V+1&gt;-&lt;uuid&gt;.metadata.json</code>.</li>
+<li>Request that the metastore swap the table’s metadata pointer from the location of <code>V</code> to the location of <code>V+1</code>.<ol>
+<li>If the swap succeeds, the commit succeeded. <code>V</code> was still the latest metadata version and the metadata file for <code>V+1</code> is now the current metadata.</li>
+<li>If the swap fails, another writer has already created <code>V+1</code>. The current writer goes back to step 1.</li>
+</ol>
+</li>
+</ol>
+<p>Notes:</p>
+<ol>
+<li>The metastore table scheme is partly implemented in <a href="/javadoc/master/index.html?org/apache/iceberg/BaseMetastoreTableOperations.html">BaseMetastoreTableOperations</a>.</li>
+</ol>
+<h3 id="delete-formats">Delete Formats<a class="headerlink" href="#delete-formats" title="Permanent link">&para;</a></h3>
+<p>This section details how to encode row-level deletes in Iceberg metadata. Row-level deletes are not supported in the current format version 1. This part of the spec is not yet complete and will be completed as format version 2.</p>
+<h4 id="position-based-delete-files">Position-based Delete Files<a class="headerlink" href="#position-based-delete-files" title="Permanent link">&para;</a></h4>
+<p>Position-based delete files identify rows in one or more data files that have been deleted.</p>
+<p>Position-based delete files store <code>file_position_delete</code>, a struct with the following fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field id, name</th>
+<th>Type</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>1  file_path</code></strong></td>
+<td><code>required string</code></td>
+<td>The full URI of a data file with FS scheme. This must match the <code>file_path</code> of the target data file in a manifest entry.</td>
+</tr>
+<tr>
+<td><strong><code>2  position</code></strong></td>
+<td><code>required long</code></td>
+<td>The ordinal position of a deleted row in the target data file identified by <code>file_path</code>, starting at <code>0</code>.</td>
+</tr>
+</tbody>
+</table>
+<p>The rows in the delete file must be sorted by <code>file_path</code> then <code>position</code> to optimize filtering rows while scanning. </p>
+<ul>
+<li>Sorting by <code>file_path</code> allows filter pushdown by file in columnar storage formats.</li>
+<li>Sorting by <code>position</code> allows filtering rows while scanning, to avoid keeping deletes in memory.</li>
+</ul>
+<p>Though the delete files can be written using any supported data file format in Iceberg, it is recommended to write delete files with same file format as the table&rsquo;s file format.</p>
+<h2 id="appendix-a-format-specific-requirements">Appendix A: Format-specific Requirements<a class="headerlink" href="#appendix-a-format-specific-requirements" title="Permanent link">&para;</a></h2>
+<h3 id="avro">Avro<a class="headerlink" href="#avro" title="Permanent link">&para;</a></h3>
+<p><strong>Data Type Mappings</strong></p>
+<p>Values should be stored in Avro using the Avro types and logical type annotations in the table below.</p>
+<p>Optional fields, array elements, and map values must be wrapped in an Avro <code>union</code> with <code>null</code>. This is the only union type allowed in Iceberg data files.</p>
+<p>Optional fields must always set the Avro field default value to null.</p>
+<p>Maps with non-string keys must use an array representation with the <code>map</code> logical type. The array representation or Avro’s map type may be used for maps with string keys.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Avro type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>boolean</code></strong></td>
+<td><code>boolean</code></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>int</code></strong></td>
+<td><code>int</code></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>long</code></strong></td>
+<td><code>long</code></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>float</code></strong></td>
+<td><code>float</code></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>double</code></strong></td>
+<td><code>double</code></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>decimal(P,S)</code></strong></td>
+<td><code>{ "type": "fixed",</code><br />&nbsp;&nbsp;<code>"size": minBytesRequired(P),</code><br />&nbsp;&nbsp;<code>"logicalType": "decimal",</code><br />&nbsp;&nbsp;<code>"precision": P,</code><br />&nbsp;&nbsp;<code>"scale": S }</code></td>
+<td>Stored as fixed using the minimum number of bytes for the given precision.</td>
+</tr>
+<tr>
+<td><strong><code>date</code></strong></td>
+<td><code>{ "type": "int",</code><br />&nbsp;&nbsp;<code>"logicalType": "date" }</code></td>
+<td>Stores days from the 1970-01-01.</td>
+</tr>
+<tr>
+<td><strong><code>time</code></strong></td>
+<td><code>{ "type": "long",</code><br />&nbsp;&nbsp;<code>"logicalType": "time-micros" }</code></td>
+<td>Stores microseconds from midnight.</td>
+</tr>
+<tr>
+<td><strong><code>timestamp</code></strong></td>
+<td><code>{ "type": "long",</code><br />&nbsp;&nbsp;<code>"logicalType": "timestamp-micros",</code><br />&nbsp;&nbsp;<code>"adjust-to-utc": false }</code></td>
+<td>Stores microseconds from 1970-01-01 00:00:00.000000.</td>
+</tr>
+<tr>
+<td><strong><code>timestamptz</code></strong></td>
+<td><code>{ "type": "long",</code><br />&nbsp;&nbsp;<code>"logicalType": "timestamp-micros",</code><br />&nbsp;&nbsp;<code>"adjust-to-utc": true }</code></td>
+<td>Stores microseconds from 1970-01-01 00:00:00.000000 UTC.</td>
+</tr>
+<tr>
+<td><strong><code>string</code></strong></td>
+<td><code>string</code></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>uuid</code></strong></td>
+<td><code>{ "type": "fixed",</code><br />&nbsp;&nbsp;<code>"size": 16,</code><br />&nbsp;&nbsp;<code>"logicalType": "uuid" }</code></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>fixed(L)</code></strong></td>
+<td><code>{ "type": "fixed",</code><br />&nbsp;&nbsp;<code>"size": L }</code></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>binary</code></strong></td>
+<td><code>bytes</code></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>struct</code></strong></td>
+<td><code>record</code></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>list</code></strong></td>
+<td><code>array</code></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>map</code></strong></td>
+<td><code>array</code> of key-value records, or <code>map</code> when keys are strings (optional).</td>
+<td>Array storage must use logical type name <code>map</code> and must store elements that are 2-field records. The first field is a non-null key and the second field is the value.</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Field IDs</strong></p>
+<p>Iceberg struct, list, and map types identify nested types by ID. When writing data to Avro files, these IDs must be stored in the Avro schema to support ID-based column pruning.</p>
+<p>IDs are stored as JSON integers in the following locations:</p>
+<table>
+<thead>
+<tr>
+<th>ID</th>
+<th>Avro schema location</th>
+<th>Property</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Struct field</strong></td>
+<td>Record field object</td>
+<td><code>field-id</code></td>
+<td><code>{ "type": "record", ...</code><br />&nbsp;&nbsp;<code>"fields": [</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>{ "name": "l",</code><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>"type": ["null", "long"],</code><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>"default": null,</code><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>"field-id": 8 }</code><br />&nbsp;&nbsp;<code>] }</code></td>
+</tr>
+<tr>
+<td><strong>List element</strong></td>
+<td>Array schema object</td>
+<td><code>element-id</code></td>
+<td><code>{ "type": "array",</code><br />&nbsp;&nbsp;<code>"items": "int",</code><br />&nbsp;&nbsp;<code>"element-id": 9 }</code></td>
+</tr>
+<tr>
+<td><strong>String map key</strong></td>
+<td>Map schema object</td>
+<td><code>key-id</code></td>
+<td><code>{ "type": "map",</code><br />&nbsp;&nbsp;<code>"values": "int",</code><br />&nbsp;&nbsp;<code>"key-id": 10,</code><br />&nbsp;&nbsp;<code>"value-id": 11 }</code></td>
+</tr>
+<tr>
+<td><strong>String map value</strong></td>
+<td>Map schema object</td>
+<td><code>value-id</code></td>
+<td></td>
+</tr>
+<tr>
+<td><strong>Map key, value</strong></td>
+<td>Key, value fields in the element record.</td>
+<td><code>field-id</code></td>
+<td><code>{ "type": "array",</code><br />&nbsp;&nbsp;<code>"logicalType": "map",</code><br />&nbsp;&nbsp;<code>"items": {</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"type": "record",</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"name": "k12_v13",</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"fields": [</code><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>{ "name": "key",</code><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>"type": "int",</code><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>"field-id": 12 },</code><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>{ "name": "value",</code><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>"type": "string",</code><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>"field-id": 13 }</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>] } }</code></td>
+</tr>
+</tbody>
+</table>
+<p>Note that the string map case is for maps where the key type is a string. Using Avro’s map type in this case is optional. Maps with string keys may be stored as arrays.</p>
+<h3 id="parquet">Parquet<a class="headerlink" href="#parquet" title="Permanent link">&para;</a></h3>
+<p><strong>Data Type Mappings</strong></p>
+<p>Values should be stored in Parquet using the types and logical type annotations in the table below. Column IDs are required.</p>
+<p>Lists must use the <a href="https://github.com/apache/parquet-format/blob/master/LogicalTypes.md#lists">3-level representation</a>.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Parquet physical type</th>
+<th>Logical type</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>boolean</code></strong></td>
+<td><code>boolean</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>int</code></strong></td>
+<td><code>int</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>long</code></strong></td>
+<td><code>long</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>float</code></strong></td>
+<td><code>float</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>double</code></strong></td>
+<td><code>double</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>decimal(P,S)</code></strong></td>
+<td><code>P &lt;= 9</code>: <code>int32</code>,<br /><code>P &lt;= 18</code>: <code>int64</code>,<br /><code>fixed</code> otherwise</td>
+<td><code>DECIMAL(P,S)</code></td>
+<td>Fixed must use the minimum number of bytes that can store <code>P</code>.</td>
+</tr>
+<tr>
+<td><strong><code>date</code></strong></td>
+<td><code>int32</code></td>
+<td><code>DATE</code></td>
+<td>Stores days from the 1970-01-01.</td>
+</tr>
+<tr>
+<td><strong><code>time</code></strong></td>
+<td><code>int64</code></td>
+<td><code>TIME_MICROS</code> with <code>adjustToUtc=false</code></td>
+<td>Stores microseconds from midnight.</td>
+</tr>
+<tr>
+<td><strong><code>timestamp</code></strong></td>
+<td><code>int64</code></td>
+<td><code>TIMESTAMP_MICROS</code> with <code>adjustToUtc=false</code></td>
+<td>Stores microseconds from 1970-01-01 00:00:00.000000.</td>
+</tr>
+<tr>
+<td><strong><code>timestamptz</code></strong></td>
+<td><code>int64</code></td>
+<td><code>TIMESTAMP_MICROS</code> with <code>adjustToUtc=true</code></td>
+<td>Stores microseconds from 1970-01-01 00:00:00.000000 UTC.</td>
+</tr>
+<tr>
+<td><strong><code>string</code></strong></td>
+<td><code>binary</code></td>
+<td><code>UTF8</code></td>
+<td>Encoding must be UTF-8.</td>
+</tr>
+<tr>
+<td><strong><code>uuid</code></strong></td>
+<td><code>fixed_len_byte_array[16]</code></td>
+<td><code>UUID</code></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>fixed(L)</code></strong></td>
+<td><code>fixed_len_byte_array[L]</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>binary</code></strong></td>
+<td><code>binary</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>struct</code></strong></td>
+<td><code>group</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>list</code></strong></td>
+<td><code>3-level list</code></td>
+<td><code>LIST</code></td>
+<td>See Parquet docs for 3-level representation.</td>
+</tr>
+<tr>
+<td><strong><code>map</code></strong></td>
+<td><code>3-level map</code></td>
+<td><code>MAP</code></td>
+<td>See Parquet docs for 3-level representation.</td>
+</tr>
+</tbody>
+</table>
+<h3 id="orc">ORC<a class="headerlink" href="#orc" title="Permanent link">&para;</a></h3>
+<p><strong>Data Type Mappings</strong></p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>ORC type</th>
+<th>ORC type attributes</th>
+<th>Notes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>boolean</code></strong></td>
+<td><code>boolean</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>int</code></strong></td>
+<td><code>int</code></td>
+<td></td>
+<td>ORC <code>tinyint</code> and <code>smallint</code> would also map to <strong><code>int</code></strong>.</td>
+</tr>
+<tr>
+<td><strong><code>long</code></strong></td>
+<td><code>long</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>float</code></strong></td>
+<td><code>float</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>double</code></strong></td>
+<td><code>double</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>decimal(P,S)</code></strong></td>
+<td><code>decimal</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>date</code></strong></td>
+<td><code>date</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>time</code></strong></td>
+<td><code>long</code></td>
+<td><code>iceberg.long-type</code>=<code>TIME</code></td>
+<td>Stores microseconds from midnight.</td>
+</tr>
+<tr>
+<td><strong><code>timestamp</code></strong></td>
+<td><code>timestamp</code></td>
+<td></td>
+<td>[1]</td>
+</tr>
+<tr>
+<td><strong><code>timestamptz</code></strong></td>
+<td><code>timestamp_instant</code></td>
+<td></td>
+<td>[1]</td>
+</tr>
+<tr>
+<td><strong><code>string</code></strong></td>
+<td><code>string</code></td>
+<td></td>
+<td>ORC <code>varchar</code> and <code>char</code> would also map to <strong><code>string</code></strong>.</td>
+</tr>
+<tr>
+<td><strong><code>uuid</code></strong></td>
+<td><code>binary</code></td>
+<td><code>iceberg.binary-type</code>=<code>UUID</code></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>fixed(L)</code></strong></td>
+<td><code>binary</code></td>
+<td><code>iceberg.binary-type</code>=<code>FIXED</code> &amp; <code>iceberg.length</code>=<code>L</code></td>
+<td>The length would not be checked by the ORC reader and should be checked by the adapter.</td>
+</tr>
+<tr>
+<td><strong><code>binary</code></strong></td>
+<td><code>binary</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>struct</code></strong></td>
+<td><code>struct</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>list</code></strong></td>
+<td><code>array</code></td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td><strong><code>map</code></strong></td>
+<td><code>map</code></td>
+<td></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<ol>
+<li>ORC&rsquo;s <a href="https://orc.apache.org/api/hive-storage-api/org/apache/hadoop/hive/ql/exec/vector/TimestampColumnVector.html">TimestampColumnVector</a> comprises of a time field (milliseconds since epoch) and a nanos field (nanoseconds within the second). Hence the milliseconds within the second are reported twice; once in the time field and again in the nanos field. The read adapter should only use milliseconds within the second from one of these fields. The write adapter should also report milliseconds within the second twice; once in the time field and again in the nanos field. ORC writer is expected to correctly consider millis information from one of the fields. More details at https://issues.apache.org/jira/browse/ORC-546</li>
+</ol>
+<p>One of the interesting challenges with this is how to map Iceberg’s schema evolution (id based) on to ORC’s (name based). In theory, we could use Iceberg’s column ids as the column and field names, but that would suck from a user’s point of view. </p>
+<p>The column IDs must be stored in ORC type attributes using the key <code>iceberg.id</code>, and <code>iceberg.required</code> to store <code>"true"</code> if the Iceberg column is required, otherwise it will be optional.</p>
+<p>Iceberg would build the desired reader schema with their schema evolution rules and pass that down to the ORC reader, which would then use its schema evolution to map that to the writer’s schema. Basically, Iceberg would need to change the names of columns and fields to get the desired mapping.</p>
+<table>
+<thead>
+<tr>
+<th>Iceberg writer</th>
+<th>ORC writer</th>
+<th>Iceberg reader</th>
+<th>ORC reader</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>struct&lt;a (1): int, b (2): string&gt;</code></td>
+<td><code>struct&lt;a: int, b: string&gt;</code></td>
+<td><code>struct&lt;a (2): string, c (3): date&gt;</code></td>
+<td><code>struct&lt;b: string, c: date&gt;</code></td>
+</tr>
+<tr>
+<td><code>struct&lt;a (1): struct&lt;b (2): string, c (3): date&gt;&gt;</code></td>
+<td><code>struct&lt;a: struct&lt;b:string, c:date&gt;&gt;</code></td>
+<td><code>struct&lt;aa (1): struct&lt;cc (3): date, bb (2): string&gt;&gt;</code></td>
+<td><code>struct&lt;a: struct&lt;c:date, b:string&gt;&gt;</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="appendix-b-32-bit-hash-requirements">Appendix B: 32-bit Hash Requirements<a class="headerlink" href="#appendix-b-32-bit-hash-requirements" title="Permanent link">&para;</a></h2>
+<p>The 32-bit hash implementation is 32-bit Murmur3 hash, x86 variant, seeded with 0.</p>
+<table>
+<thead>
+<tr>
+<th>Primitive type</th>
+<th>Hash specification</th>
+<th>Test value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>int</code></strong></td>
+<td><code>hashLong(long(v))</code>          [1]</td>
+<td><code>34</code> ￫ <code>2017239379</code></td>
+</tr>
+<tr>
+<td><strong><code>long</code></strong></td>
+<td><code>hashBytes(littleEndianBytes(v))</code></td>
+<td><code>34L</code> ￫ <code>2017239379</code></td>
+</tr>
+<tr>
+<td><strong><code>decimal(P,S)</code></strong></td>
+<td><code>hashBytes(minBigEndian(unscaled(v)))</code>[2]</td>
+<td><code>14.20</code> ￫ <code>-500754589</code></td>
+</tr>
+<tr>
+<td><strong><code>date</code></strong></td>
+<td><code>hashInt(daysFromUnixEpoch(v))</code></td>
+<td><code>2017-11-16</code> ￫ <code>-653330422</code></td>
+</tr>
+<tr>
+<td><strong><code>time</code></strong></td>
+<td><code>hashLong(microsecsFromMidnight(v))</code></td>
+<td><code>22:31:08</code> ￫ <code>-662762989</code></td>
+</tr>
+<tr>
+<td><strong><code>timestamp</code></strong></td>
+<td><code>hashLong(microsecsFromUnixEpoch(v))</code></td>
+<td><code>2017-11-16T22:31:08</code> ￫ <code>-2047944441</code></td>
+</tr>
+<tr>
+<td><strong><code>timestamptz</code></strong></td>
+<td><code>hashLong(microsecsFromUnixEpoch(v))</code></td>
+<td><code>2017-11-16T14:31:08-08:00</code>￫ <code>-2047944441</code></td>
+</tr>
+<tr>
+<td><strong><code>string</code></strong></td>
+<td><code>hashBytes(utf8Bytes(v))</code></td>
+<td><code>iceberg</code> ￫ <code>1210000089</code></td>
+</tr>
+<tr>
+<td><strong><code>uuid</code></strong></td>
+<td><code>hashBytes(uuidBytes(v))</code>        [3]</td>
+<td><code>f79c3e09-677c-4bbd-a479-3f349cb785e7</code> ￫ <code>1488055340</code></td>
+</tr>
+<tr>
+<td><strong><code>fixed(L)</code></strong></td>
+<td><code>hashBytes(v)</code></td>
+<td><code>00 01 02 03</code> ￫ <code>188683207</code></td>
+</tr>
+<tr>
+<td><strong><code>binary</code></strong></td>
+<td><code>hashBytes(v)</code></td>
+<td><code>00 01 02 03</code> ￫ <code>188683207</code></td>
+</tr>
+</tbody>
+</table>
+<p>The types below are not currently valid for bucketing, and so are not hashed. However, if that changes and a hash value is needed, the following table shall apply:</p>
+<table>
+<thead>
+<tr>
+<th>Primitive type</th>
+<th>Hash specification</th>
+<th>Test value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>boolean</code></strong></td>
+<td><code>false: hashInt(0)</code>, <code>true: hashInt(1)</code></td>
+<td><code>true</code> ￫ <code>1392991556</code></td>
+</tr>
+<tr>
+<td><strong><code>float</code></strong></td>
+<td><code>hashDouble(double(v))</code>         [4]</td>
+<td><code>1.0F</code> ￫ <code>-142385009</code></td>
+</tr>
+<tr>
+<td><strong><code>double</code></strong></td>
+<td><code>hashLong(doubleToLongBits(v))</code></td>
+<td><code>1.0D</code> ￫ <code>-142385009</code></td>
+</tr>
+</tbody>
+</table>
+<p>Notes:</p>
+<ol>
+<li>Integer and long hash results must be identical for all integer values. This ensures that schema evolution does not change bucket partition values if integer types are promoted.</li>
+<li>Decimal values are hashed using the minimum number of bytes required to hold the unscaled value as a two’s complement big-endian; this representation does not include padding bytes required for storage in a fixed-length array.
+Hash results are not dependent on decimal scale, which is part of the type, not the data value.</li>
+<li>UUIDs are encoded using big endian. The test UUID for the example above is: <code>f79c3e09-677c-4bbd-a479-3f349cb785e7</code>. This UUID encoded as a byte array is:
+<code>F7 9C 3E 09 67 7C 4B BD A4 79 3F 34 9C B7 85 E7</code></li>
+<li>Float hash values are the result of hashing the float cast to double to ensure that schema evolution does not change hash values if float types are promoted.</li>
+</ol>
+<h2 id="appendix-c-json-serialization">Appendix C: JSON serialization<a class="headerlink" href="#appendix-c-json-serialization" title="Permanent link">&para;</a></h2>
+<h3 id="schemas">Schemas<a class="headerlink" href="#schemas" title="Permanent link">&para;</a></h3>
+<p>Schemas are serialized to JSON as a struct. Types are serialized according to this table:</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>JSON representation</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>boolean</code></strong></td>
+<td><code>JSON string: "boolean"</code></td>
+<td><code>"boolean"</code></td>
+</tr>
+<tr>
+<td><strong><code>int</code></strong></td>
+<td><code>JSON string: "int"</code></td>
+<td><code>"int"</code></td>
+</tr>
+<tr>
+<td><strong><code>long</code></strong></td>
+<td><code>JSON string: "long"</code></td>
+<td><code>"long"</code></td>
+</tr>
+<tr>
+<td><strong><code>float</code></strong></td>
+<td><code>JSON string: "float"</code></td>
+<td><code>"float"</code></td>
+</tr>
+<tr>
+<td><strong><code>double</code></strong></td>
+<td><code>JSON string: "double"</code></td>
+<td><code>"double"</code></td>
+</tr>
+<tr>
+<td><strong><code>date</code></strong></td>
+<td><code>JSON string: "date"</code></td>
+<td><code>"date"</code></td>
+</tr>
+<tr>
+<td><strong><code>time</code></strong></td>
+<td><code>JSON string: "time"</code></td>
+<td><code>"time"</code></td>
+</tr>
+<tr>
+<td><strong><code>timestamp without zone</code></strong></td>
+<td><code>JSON string: "timestamp"</code></td>
+<td><code>"timestamp"</code></td>
+</tr>
+<tr>
+<td><strong><code>timestamp with zone</code></strong></td>
+<td><code>JSON string: "timestamptz"</code></td>
+<td><code>"timestamptz"</code></td>
+</tr>
+<tr>
+<td><strong><code>string</code></strong></td>
+<td><code>JSON string: "string"</code></td>
+<td><code>"string"</code></td>
+</tr>
+<tr>
+<td><strong><code>uuid</code></strong></td>
+<td><code>JSON string: "uuid"</code></td>
+<td><code>"uuid"</code></td>
+</tr>
+<tr>
+<td><strong><code>fixed(L)</code></strong></td>
+<td><code>JSON string: "fixed[&lt;L&gt;]"</code></td>
+<td><code>"fixed[16]"</code></td>
+</tr>
+<tr>
+<td><strong><code>binary</code></strong></td>
+<td><code>JSON string: "binary"</code></td>
+<td><code>"binary"</code></td>
+</tr>
+<tr>
+<td><strong><code>decimal(P, S)</code></strong></td>
+<td><code>JSON string: "decimal(&lt;P&gt;,&lt;S&gt;)"</code></td>
+<td><code>"decimal(9,2)"</code>,<br /><code>"decimal(9, 2)"</code></td>
+</tr>
+<tr>
+<td><strong><code>struct</code></strong></td>
+<td><code>JSON object: {</code><br />&nbsp;&nbsp;<code>"type": "struct",</code><br />&nbsp;&nbsp;<code>"fields": [ {</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"id": &lt;field id int&gt;,</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"name": &lt;name string&gt;,</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"required": &lt;boolean&gt;,</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"type": &lt;type JSON&gt;,</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"doc": &lt;comment string&gt;</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>}, ...</code><br />&nbsp;&nbsp;<code>] }</code></td>
+<td><code>{</code><br />&nbsp;&nbsp;<code>"type": "struct",</code><br />&nbsp;&nbsp;<code>"fields": [ {</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"id": 1,</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"name": "id",</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"required": true,</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"type": "uuid"</code><br />&nbsp;&nbsp;<code>}, {</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"id": 2,</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"name": "data",</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"required": false,</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"type": {</code><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>"type": "list",</code><br />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<code>...</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>}</code><br />&nbsp;&nbsp;<code>} ]</code><br /><code>}</code></td>
+</tr>
+<tr>
+<td><strong><code>list</code></strong></td>
+<td><code>JSON object: {</code><br />&nbsp;&nbsp;<code>"type": "list",</code><br />&nbsp;&nbsp;<code>"element-id": &lt;id int&gt;,</code><br />&nbsp;&nbsp;<code>"element-required": &lt;bool&gt;</code><br />&nbsp;&nbsp;<code>"element": &lt;type JSON&gt;</code><br /><code>}</code></td>
+<td><code>{</code><br />&nbsp;&nbsp;<code>"type": "list",</code><br />&nbsp;&nbsp;<code>"element-id": 3,</code><br />&nbsp;&nbsp;<code>"element-required": true,</code><br />&nbsp;&nbsp;<code>"element": "string"</code><br /><code>}</code></td>
+</tr>
+<tr>
+<td><strong><code>map</code></strong></td>
+<td><code>JSON object: {</code><br />&nbsp;&nbsp;<code>"type": "map",</code><br />&nbsp;&nbsp;<code>"key-id": &lt;key id int&gt;,</code><br />&nbsp;&nbsp;<code>"key": &lt;type JSON&gt;,</code><br />&nbsp;&nbsp;<code>"value-id": &lt;val id int&gt;,</code><br />&nbsp;&nbsp;<code>"value-required": &lt;bool&gt;</code><br />&nbsp;&nbsp;<code>"value": &lt;type JSON&gt;</code><br /><code>}</code></td>
+<td><code>{</code><br />&nbsp;&nbsp;<code>"type": "map",</code><br />&nbsp;&nbsp;<code>"key-id": 4,</code><br />&nbsp;&nbsp;<code>"key": "string",</code><br />&nbsp;&nbsp;<code>"value-id": 5,</code><br />&nbsp;&nbsp;<code>"value-required": false,</code><br />&nbsp;&nbsp;<code>"value": "double"</code><br /><code>}</code></td>
+</tr>
+</tbody>
+</table>
+<h3 id="partition-specs">Partition Specs<a class="headerlink" href="#partition-specs" title="Permanent link">&para;</a></h3>
+<p>Partition specs are serialized as a JSON object with the following fields:</p>
+<table>
+<thead>
+<tr>
+<th>Field</th>
+<th>JSON representation</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>spec-id</code></strong></td>
+<td><code>JSON int</code></td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td><strong><code>fields</code></strong></td>
+<td><code>JSON list: [</code><br />&nbsp;&nbsp;<code>&lt;partition field JSON&gt;,</code><br />&nbsp;&nbsp;<code>...</code><br /><code>]</code></td>
+<td><code>[ {</code><br />&nbsp;&nbsp;<code>"source-id": 4,</code><br />&nbsp;&nbsp;<code>"field-id": 1000,</code><br />&nbsp;&nbsp;<code>"name": "ts_day",</code><br />&nbsp;&nbsp;<code>"transform": "day"</code><br /><code>}, {</code><br />&nbsp;&nbsp;<code>"source-id": 1,</code><br />&nbsp;&nbsp;<code>"field-id": 1001,</code><br />&nbsp;&nbsp;<code>"name": "id_bucket",</code><br />&nbsp;&nbsp;<code>"transform": "bucket[16]"</code><br /><code>} ]</code></td>
+</tr>
+</tbody>
+</table>
+<p>Each partition field in the fields list is stored as an object. See the table for more detail:</p>
+<table>
+<thead>
+<tr>
+<th>Transform or Field</th>
+<th>JSON representation</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>identity</code></strong></td>
+<td><code>JSON string: "identity"</code></td>
+<td><code>"identity"</code></td>
+</tr>
+<tr>
+<td><strong><code>bucket[N]</code></strong></td>
+<td><code>JSON string: "bucket&lt;N&gt;]"</code></td>
+<td><code>"bucket[16]"</code></td>
+</tr>
+<tr>
+<td><strong><code>truncate[W]</code></strong></td>
+<td><code>JSON string: "truncate[&lt;W&gt;]"</code></td>
+<td><code>"truncate[20]"</code></td>
+</tr>
+<tr>
+<td><strong><code>year</code></strong></td>
+<td><code>JSON string: "year"</code></td>
+<td><code>"year"</code></td>
+</tr>
+<tr>
+<td><strong><code>month</code></strong></td>
+<td><code>JSON string: "month"</code></td>
+<td><code>"month"</code></td>
+</tr>
+<tr>
+<td><strong><code>day</code></strong></td>
+<td><code>JSON string: "day"</code></td>
+<td><code>"day"</code></td>
+</tr>
+<tr>
+<td><strong><code>hour</code></strong></td>
+<td><code>JSON string: "hour"</code></td>
+<td><code>"hour"</code></td>
+</tr>
+<tr>
+<td><strong><code>Partition Field</code></strong></td>
+<td><code>JSON object: {</code><br />&nbsp;&nbsp;<code>"source-id": &lt;id int&gt;,</code><br />&nbsp;&nbsp;<code>"field-id": &lt;field id int&gt;,</code><br />&nbsp;&nbsp;<code>"name": &lt;name string&gt;,</code><br />&nbsp;&nbsp;<code>"transform": &lt;transform JSON&gt;</code><br /><code>}</code></td>
+<td><code>{</code><br />&nbsp;&nbsp;<code>"source-id": 1,</code><br />&nbsp;&nbsp;<code>"field-id": 1000,</code><br />&nbsp;&nbsp;<code>"name": "id_bucket",</code><br />&nbsp;&nbsp;<code>"transform": "bucket[16]"</code><br /><code>}</code></td>
+</tr>
+</tbody>
+</table>
+<p>In some cases partition specs are stored using only the field list instead of the object format that includes the spec ID, like the deprecated <code>partition-spec</code> field in table metadata. The object format should be used unless otherwise noted in this spec.</p>
+<h3 id="table-metadata-and-snapshots">Table Metadata and Snapshots<a class="headerlink" href="#table-metadata-and-snapshots" title="Permanent link">&para;</a></h3>
+<p>Table metadata is serialized as a JSON object according to the following table. Snapshots are not serialized separately. Instead, they are stored in the table metadata JSON.</p>
+<table>
+<thead>
+<tr>
+<th>Metadata field</th>
+<th>JSON representation</th>
+<th>Example</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>format-version</code></strong></td>
+<td><code>JSON int</code></td>
+<td><code>1</code></td>
+</tr>
+<tr>
+<td><strong><code>table-uuid</code></strong></td>
+<td><code>JSON string</code></td>
+<td><code>"fb072c92-a02b-11e9-ae9c-1bb7bc9eca94"</code></td>
+</tr>
+<tr>
+<td><strong><code>location</code></strong></td>
+<td><code>JSON string</code></td>
+<td><code>"s3://b/wh/data.db/table"</code></td>
+</tr>
+<tr>
+<td><strong><code>last-updated-ms</code></strong></td>
+<td><code>JSON long</code></td>
+<td><code>1515100955770</code></td>
+</tr>
+<tr>
+<td><strong><code>last-column-id</code></strong></td>
+<td><code>JSON int</code></td>
+<td><code>22</code></td>
+</tr>
+<tr>
+<td><strong><code>schema</code></strong></td>
+<td><code>JSON schema (object)</code></td>
+<td><code>See above</code></td>
+</tr>
+<tr>
+<td><strong><code>partition-spec</code></strong></td>
+<td><code>JSON partition fields (list)</code></td>
+<td><code>See above, read partition-specs instead</code></td>
+</tr>
+<tr>
+<td><strong><code>partition-specs</code></strong></td>
+<td><code>JSON partition specs (list of objects)</code></td>
+<td><code>See above</code></td>
+</tr>
+<tr>
+<td><strong><code>default-spec-id</code></strong></td>
+<td><code>JSON int</code></td>
+<td><code>0</code></td>
+</tr>
+<tr>
+<td><strong><code>properties</code></strong></td>
+<td><code>JSON object: {</code><br />&nbsp;&nbsp;<code>"&lt;key&gt;": "&lt;val&gt;",</code><br />&nbsp;&nbsp;<code>...</code><br /><code>}</code></td>
+<td><code>{</code><br />&nbsp;&nbsp;<code>"write.format.default": "avro",</code><br />&nbsp;&nbsp;<code>"commit.retry.num-retries": "4"</code><br /><code>}</code></td>
+</tr>
+<tr>
+<td><strong><code>current-snapshot-id</code></strong></td>
+<td><code>JSON long</code></td>
+<td><code>3051729675574597004</code></td>
+</tr>
+<tr>
+<td><strong><code>snapshots</code></strong></td>
+<td><code>JSON list of objects: [ {</code><br />&nbsp;&nbsp;<code>"snapshot-id": &lt;id&gt;,</code><br />&nbsp;&nbsp;<code>"timestamp-ms": &lt;timestamp-in-ms&gt;,</code><br />&nbsp;&nbsp;<code>"summary": {</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"operation": &lt;operation&gt;,</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>... },</code><br />&nbsp;&nbsp;<code>"manifest-list": "&lt;location&gt;"</code><br />&nbsp;&nbsp;<code>},</code><br />&nbsp;&nbsp;<code>...</code><br /><code>]</code></td>
+<td><code>[ {</code><br />&nbsp;&nbsp;<code>"snapshot-id": 3051729675574597004,</code><br />&nbsp;&nbsp;<code>"timestamp-ms": 1515100955770,</code><br />&nbsp;&nbsp;<code>"summary": {</code><br />&nbsp;&nbsp;&nbsp;&nbsp;<code>"operation": "append"</code><br />&nbsp;&nbsp;<code>},</code><br />&nbsp;&nbsp;<code>"manifest-list": "s3://b/wh/.../s1.avro"</code><br /><code>} ]</code></td>
+</tr>
+<tr>
+<td><strong><code>snapshot-log</code></strong></td>
+<td><code>JSON list of objects: [</code><br />&nbsp;&nbsp;<code>{</code><br />&nbsp;&nbsp;<code>"snapshot-id": ,</code><br />&nbsp;&nbsp;<code>"timestamp-ms":</code><br />&nbsp;&nbsp;<code>},</code><br />&nbsp;&nbsp;<code>...</code><br /><code>]</code></td>
+<td><code>[ {</code><br />&nbsp;&nbsp;<code>"snapshot-id": 30517296...,</code><br />&nbsp;&nbsp;<code>"timestamp-ms": 1515100...</code><br /><code>} ]</code></td>
+</tr>
+</tbody>
+</table>
+<h2 id="appendix-d-single-value-serialization">Appendix D: Single-value serialization<a class="headerlink" href="#appendix-d-single-value-serialization" title="Permanent link">&para;</a></h2>
+<p>This serialization scheme is for storing single values as individual binary values in the lower and upper bounds maps of manifest files.</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Binary serialization</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong><code>boolean</code></strong></td>
+<td><code>0x00</code> for false, non-zero byte for true</td>
+</tr>
+<tr>
+<td><strong><code>int</code></strong></td>
+<td>Stored as 4-byte little-endian</td>
+</tr>
+<tr>
+<td><strong><code>long</code></strong></td>
+<td>Stored as 8-byte little-endian</td>
+</tr>
+<tr>
+<td><strong><code>float</code></strong></td>
+<td>Stored as 4-byte little-endian</td>
+</tr>
+<tr>
+<td><strong><code>double</code></strong></td>
+<td>Stored as 8-byte little-endian</td>
+</tr>
+<tr>
+<td><strong><code>date</code></strong></td>
+<td>Stores days from the 1970-01-01 in an 4-byte little-endian int</td>
+</tr>
+<tr>
+<td><strong><code>time</code></strong></td>
+<td>Stores microseconds from midnight in an 8-byte little-endian long</td>
+</tr>
+<tr>
+<td><strong><code>timestamp without zone</code></strong></td>
+<td>Stores microseconds from 1970-01-01 00:00:00.000000 in an 8-byte little-endian long</td>
+</tr>
+<tr>
+<td><strong><code>timestamp with zone</code></strong></td>
+<td>Stores microseconds from 1970-01-01 00:00:00.000000 UTC in an 8-byte little-endian long</td>
+</tr>
+<tr>
+<td><strong><code>string</code></strong></td>
+<td>UTF-8 bytes (without length)</td>
+</tr>
+<tr>
+<td><strong><code>uuid</code></strong></td>
+<td>16-byte big-endian value, see example in Appendix B</td>
+</tr>
+<tr>
+<td><strong><code>fixed(L)</code></strong></td>
+<td>Binary value</td>
+</tr>
+<tr>
+<td><strong><code>binary</code></strong></td>
+<td>Binary value (without length)</td>
+</tr>
+<tr>
+<td><strong><code>decimal(P, S)</code></strong></td>
+<td>Stores unscaled value as two’s-complement big-endian binary, using the minimum number of bytes for the value</td>
+</tr>
+<tr>
+<td><strong><code>struct</code></strong></td>
+<td>Not supported</td>
+</tr>
+<tr>
+<td><strong><code>list</code></strong></td>
+<td>Not supported</td>
+</tr>
+<tr>
+<td><strong><code>map</code></strong></td>
+<td>Not supported</td>
+</tr>
+</tbody>
+</table>
+<h2 id="format-version-changes">Format version changes<a class="headerlink" href="#format-version-changes" title="Permanent link">&para;</a></h2>
+<h3 id="version-2">Version 2<a class="headerlink" href="#version-2" title="Permanent link">&para;</a></h3>
+<p>Writing v1 metadata:
+* Table metadata field <code>last-sequence-number</code> should not be written.
+* Snapshot field <code>sequence-number</code> should not be written.</p>
+<p>Reading v1 metadata:
+* Table metadata field <code>last-sequence-number</code> must default to 0.
+* Snapshot field <code>sequence-number</code> must default to 0.</p>
+<p>Writing v2 metadata:
+* Table metadata added required field <code>last-sequence-number</code>.
+* Table metadata now requires field <code>table-uuid</code>.
+* Table metadata now requires field <code>partition-specs</code>.
+* Table metadata now requires field <code>default-spec-id</code>.
+* Table metadata field <code>partition-spec</code> is no longer required and may be omitted.
+* Snapshot added required field field <code>sequence-number</code>.
+* Snapshot now requires field <code>manifest-list</code>.
+* Snapshot field <code>manifests</code> is no longer allowed.</p>
+<p>Note that these requirements apply when writing data to a v2 table. Tables that are upgraded from v1 may contain metadata that does not follow these requirements. Implementations should remain backward-compatible with v1 metadata requirements.</p></div>
+        
+        
+    </div>
+
+    
+      <footer class="col-md-12 text-center">
+          
+          
+            <hr>
+            <p>
+            <small>Copyright 2018-2020 <a href='https://www.apache.org/'>The Apache Software Foundation</a><br />Apache Iceberg, Iceberg, Apache, the Apache feather logo, and the Apache Iceberg project logo are either registered<br />trademarks or trademarks of The Apache Software Foundation in the United States and other countries.</small><br>
+            
+            <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</small>
+            </p>
+          
+
+          
+          
+      </footer>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="../js/bootstrap-3.0.3.min.js"></script>
+
+    
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js"></script>
+        
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    <script>var base_url = ".."</script>
+    
+    <script src="../js/base.js"></script>
+
+    <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+    </body>
+
+</html>

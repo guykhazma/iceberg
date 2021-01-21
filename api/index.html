@@ -1,0 +1,593 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A table format for large, slow-moving tabular data">
+    
+    
+    <link rel="shortcut icon" href="../img/favicon.ico">
+
+    
+    <title>API intro - Apache Iceberg</title>
+    
+
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/v4-shims.css">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hack-font@3.3.0/build/web/hack.min.css">
+    <link href='//rsms.me/inter/inter.css' rel='stylesheet' type='text/css'>
+    <link href='//fonts.googleapis.com/css?family=Open+Sans:300italic,400italic,700italic,400,300,600,700&subset=latin-ext,latin' rel='stylesheet' type='text/css'>
+    <link href="../css/bootstrap-custom.min.css" rel="stylesheet">
+    <link href="../css/base.min.css" rel="stylesheet">
+    <link href="../css/cinder.min.css" rel="stylesheet">
+
+    
+        
+        <link rel="stylesheet" href="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/styles/github.min.css">
+        
+    
+    <link href="../css/extra.css" rel="stylesheet">
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+            <script src="https://cdn.jsdelivr.net/npm/html5shiv@3.7.3/dist/html5shiv.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/respond.js@1.4.2/dest/respond.min.js"></script>
+        <![endif]-->
+
+    
+
+     
+</head>
+
+<body>
+
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
+    <div class="container">
+
+        <!-- Collapsed navigation -->
+        <div class="navbar-header">
+            <!-- Expander button -->
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            
+
+            <!-- Main title -->
+
+            
+              <a class="navbar-brand" href="..">Apache Iceberg</a>
+            
+        </div>
+
+        <!-- Expanded navigation -->
+        <div class="navbar-collapse collapse">
+                <!-- Main navigation -->
+                <ul class="nav navbar-nav">
+                
+                
+                    <li >
+                        <a href="..">About</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Project <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../community/">Community</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../releases/">Releases</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../trademarks/">Trademarks</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../how-to-release/">How to Release</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">User docs <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../getting-started/">Getting Started</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../spark/">Spark</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../presto/">Presto</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../configuration/">Configuration</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../schemas/">Schemas</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../partitioning/">Partitioning</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../evolution/">Table evolution</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../performance/">Performance</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../reliability/">Reliability</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../spark#time-travel">Time Travel</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown active">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Java <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="https://github.com/apache/iceberg">Git Repo</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../java-api-quickstart/">Quickstart</a>
+</li>
+
+                        
+                            
+<li class="active">
+    <a href="./">API intro</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="/javadoc/">Javadoc</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../custom-catalog/">Custom Catalog</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Python <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="https://github.com/apache/iceberg/tree/master/python">Git Repo</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../python-quickstart/">Quickstart</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../python-api-intro/">API Intro</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../python-feature-support/">Feature Support</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Format <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="../terms/">Definitions</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="../spec/">Spec</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                
+                    <li >
+                        <a href="https://github.com/apache/iceberg">Iceberg on GitHub</a>
+                    </li>
+                
+                
+                
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">ASF <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                        
+                            
+<li >
+    <a href="https://www.apache.org/licenses/">License</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://www.apache.org/security/">Security</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://www.apache.org/foundation/thanks.html">Sponsors</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://www.apache.org/foundation/sponsorship.html">Donate</a>
+</li>
+
+                        
+                            
+<li >
+    <a href="https://www.apache.org/events/current-event.html">Events</a>
+</li>
+
+                        
+                        </ul>
+                    </li>
+                
+                
+                </ul>
+
+            <ul class="nav navbar-nav navbar-right">
+                    <li >
+                        <a rel="prev" href="../java-api-quickstart/">
+                            <i class="fas fa-arrow-left"></i> Previous
+                        </a>
+                    </li>
+                    <li >
+                        <a rel="next" href="../custom-catalog/">
+                            Next <i class="fas fa-arrow-right"></i>
+                        </a>
+                    </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+    <div class="container">
+        
+        
+        <div class="col-md-3"><div class="bs-sidebar hidden-print affix well" role="complementary">
+    <ul class="nav bs-sidenav">
+        <li class="first-level active"><a href="#iceberg-java-api">Iceberg Java API</a></li>
+            <li class="second-level"><a href="#tables">Tables</a></li>
+                
+                <li class="third-level"><a href="#table-metadata">Table metadata</a></li>
+                <li class="third-level"><a href="#scanning">Scanning</a></li>
+                <li class="third-level"><a href="#update-operations">Update operations</a></li>
+                <li class="third-level"><a href="#transactions">Transactions</a></li>
+            <li class="second-level"><a href="#types">Types</a></li>
+                
+                <li class="third-level"><a href="#primitives">Primitives</a></li>
+                <li class="third-level"><a href="#nested-types">Nested types</a></li>
+            <li class="second-level"><a href="#expressions">Expressions</a></li>
+                
+                <li class="third-level"><a href="#expression-binding">Expression binding</a></li>
+                <li class="third-level"><a href="#expression-example">Expression example</a></li>
+            <li class="second-level"><a href="#modules">Modules</a></li>
+                
+    </ul>
+</div></div>
+        <div class="col-md-9" role="main">
+
+<!--
+ - Licensed to the Apache Software Foundation (ASF) under one or more
+ - contributor license agreements.  See the NOTICE file distributed with
+ - this work for additional information regarding copyright ownership.
+ - The ASF licenses this file to You under the Apache License, Version 2.0
+ - (the "License"); you may not use this file except in compliance with
+ - the License.  You may obtain a copy of the License at
+ -
+ -   http://www.apache.org/licenses/LICENSE-2.0
+ -
+ - Unless required by applicable law or agreed to in writing, software
+ - distributed under the License is distributed on an "AS IS" BASIS,
+ - WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ - See the License for the specific language governing permissions and
+ - limitations under the License.
+ -->
+
+<h1 id="iceberg-java-api">Iceberg Java API<a class="headerlink" href="#iceberg-java-api" title="Permanent link">&para;</a></h1>
+<h2 id="tables">Tables<a class="headerlink" href="#tables" title="Permanent link">&para;</a></h2>
+<p>The main purpose of the Iceberg API is to manage table metadata, like schema, partition spec, metadata, and data files that store table data.</p>
+<p>Table metadata and operations are accessed through the <code>Table</code> interface. This interface will return table information, </p>
+<h3 id="table-metadata">Table metadata<a class="headerlink" href="#table-metadata" title="Permanent link">&para;</a></h3>
+<p>The <a href="/javadoc/master/index.html?org/apache/iceberg/Table.html"><code>Table</code> interface</a> provides access table metadata:</p>
+<ul>
+<li><code>schema</code> returns the current table <a href="../schemas">schema</a></li>
+<li><code>spec</code> returns the current table partition spec</li>
+<li><code>properties</code> returns a map of key-value <a href="../configuration">properties</a></li>
+<li><code>currentSnapshot</code> returns the current table snapshot</li>
+<li><code>snapshots</code> returns all valid snapshots for the table</li>
+<li><code>snapshot(id)</code> returns a specific snapshot by ID</li>
+<li><code>location</code> returns the table&rsquo;s base location</li>
+</ul>
+<p>Tables also provide <code>refresh</code> to update the table to the latest version, and expose helpers:</p>
+<ul>
+<li><code>io</code> returns the <code>FileIO</code> used to read and write table files</li>
+<li><code>locationProvider</code> returns a <code>LocationProvider</code> used to create paths for data and metadata files</li>
+</ul>
+<h3 id="scanning">Scanning<a class="headerlink" href="#scanning" title="Permanent link">&para;</a></h3>
+<p>Iceberg table scans start by creating a <code>TableScan</code> object with <code>newScan</code>.</p>
+<pre><code class="language-java">TableScan scan = table.newScan();
+</code></pre>
+<p>To configure a scan, call <code>filter</code> and <code>select</code> on the <code>TableScan</code> to get a new <code>TableScan</code> with those changes.</p>
+<pre><code class="language-java">TableScan filteredScan = scan.filter(Expressions.equal(&quot;id&quot;, 5))
+</code></pre>
+<p>Calls to configuration methods create a new <code>TableScan</code> so that each <code>TableScan</code> is immutable and won&rsquo;t change unexpectedly if shared across threads.</p>
+<p>When a scan is configured, <code>planFiles</code>, <code>planTasks</code>, and <code>schema</code> are used to return files, tasks, and the read projection.</p>
+<pre><code class="language-java">TableScan scan = table.newScan()
+    .filter(Expressions.equal(&quot;id&quot;, 5))
+    .select(&quot;id&quot;, &quot;data&quot;);
+
+Schema projection = scan.schema();
+Iterable&lt;CombinedScanTask&gt; tasks = scan.planTasks();
+</code></pre>
+<p>Use <code>asOfTime</code> or <code>useSnapshot</code> to configure the table snapshot for time travel queries.</p>
+<h3 id="update-operations">Update operations<a class="headerlink" href="#update-operations" title="Permanent link">&para;</a></h3>
+<p><code>Table</code> also exposes operations that update the table. These operations use a builder pattern, <a href="/javadoc/master/index.html?org/apache/iceberg/PendingUpdate.html"><code>PendingUpdate</code></a>, that commits when <code>PendingUpdate#commit</code> is called.</p>
+<p>For example, updating the table schema is done by calling <code>updateSchema</code>, adding updates to the builder, and finally calling <code>commit</code> to commit the pending changes to the table:</p>
+<pre><code class="language-java">table.updateSchema()
+    .addColumn(&quot;count&quot;, Types.LongType.get())
+    .commit();
+</code></pre>
+<p>Available operations to update a table are:</p>
+<ul>
+<li><code>updateSchema</code> &ndash; update the table schema</li>
+<li><code>updateProperties</code> &ndash; update table properties</li>
+<li><code>updateLocation</code> &ndash; update the table&rsquo;s base location</li>
+<li><code>newAppend</code> &ndash; used to append data files</li>
+<li><code>newFastAppend</code> &ndash; used to append data files, will not compact metadata</li>
+<li><code>newOverwrite</code> &ndash; used to append data files and remove files that are overwritten</li>
+<li><code>newDelete</code> &ndash; used to delete data files</li>
+<li><code>newRewrite</code> &ndash; used to rewrite data files; will replace existing files with new versions</li>
+<li><code>newTransaction</code> &ndash; create a new table-level transaction</li>
+<li><code>rewriteManifests</code> &ndash; rewrite manifest data by clustering files, for faster scan planning</li>
+<li><code>rollback</code> &ndash; roll the table state back by pointing current to a specific snapshot</li>
+</ul>
+<h3 id="transactions">Transactions<a class="headerlink" href="#transactions" title="Permanent link">&para;</a></h3>
+<h2 id="types">Types<a class="headerlink" href="#types" title="Permanent link">&para;</a></h2>
+<p>Iceberg data types are located in the <a href="/javadoc/master/index.html?org/apache/iceberg/types/package-summary.html"><code>org.apache.iceberg.types</code> package</a>.</p>
+<h3 id="primitives">Primitives<a class="headerlink" href="#primitives" title="Permanent link">&para;</a></h3>
+<p>Primitive type instances are available from static methods in each type class. Types without parameters use <code>get</code>, and types like <code>decimal</code> use factory methods:</p>
+<pre><code class="language-java">Types.IntegerType.get()    // int
+Types.DoubleType.get()     // double
+Types.DecimalType.of(9, 2) // decimal(9, 2)
+</code></pre>
+<h3 id="nested-types">Nested types<a class="headerlink" href="#nested-types" title="Permanent link">&para;</a></h3>
+<p>Structs, maps, and lists are created using factory methods in type classes.</p>
+<p>Like struct fields, map keys or values and list elements are tracked as nested fields. Nested fields track <a href="../evolution#correctness">field IDs</a> and nullability.</p>
+<p>Struct fields are created using <code>NestedField.optional</code> or <code>NestedField.required</code>. Map value and list element nullability is set in the map and list factory methods.</p>
+<pre><code class="language-java">// struct&lt;1 id: int, 2 data: optional string&gt;
+StructType struct = Struct.of(
+    Types.NestedField.required(1, &quot;id&quot;, Types.IntegerType.get()),
+    Types.NestedField.optional(2, &quot;data&quot;, Types.StringType.get())
+  )
+</code></pre>
+<pre><code class="language-java">// map&lt;1 key: int, 2 value: optional string&gt;
+MapType map = MapType.ofOptional(
+    1, Types.IntegerType.get(),
+    2, Types.StringType.get()
+  )
+</code></pre>
+<pre><code class="language-java">// array&lt;1 element: int&gt;
+ListType list = ListType.ofRequired(1, IntegerType.get());
+</code></pre>
+<h2 id="expressions">Expressions<a class="headerlink" href="#expressions" title="Permanent link">&para;</a></h2>
+<p>Iceberg&rsquo;s expressions are used to configure table scans. To create expressions, use the factory methods in <a href="/javadoc/master/index.html?org/apache/iceberg/expressions/Expressions.html"><code>Expressions</code></a>.</p>
+<p>Supported predicate expressions are:</p>
+<ul>
+<li><code>isNull</code></li>
+<li><code>notNull</code></li>
+<li><code>equal</code></li>
+<li><code>notEqual</code></li>
+<li><code>lessThan</code></li>
+<li><code>lessThanOrEqual</code></li>
+<li><code>greaterThan</code></li>
+<li><code>greaterThanOrEqual</code></li>
+<li><code>in</code></li>
+<li><code>notIn</code></li>
+<li><code>startsWith</code></li>
+</ul>
+<p>Supported expression operations are:</p>
+<ul>
+<li><code>and</code></li>
+<li><code>or</code></li>
+<li><code>not</code></li>
+</ul>
+<p>Constant expressions are:</p>
+<ul>
+<li><code>alwaysTrue</code></li>
+<li><code>alwaysFalse</code></li>
+</ul>
+<h3 id="expression-binding">Expression binding<a class="headerlink" href="#expression-binding" title="Permanent link">&para;</a></h3>
+<p>When created, expressions are unbound. Before an expression is used, it will be bound to a data type to find the field ID the expression name represents, and to convert predicate literals.</p>
+<p>For example, before using the expression <code>lessThan("x", 10)</code>, Iceberg needs to determine which column <code>"x"</code> refers to and convert <code>10</code> to that colunn&rsquo;s data type.</p>
+<p>If the expression could be bound to the type <code>struct&lt;1 x: long, 2 y: long&gt;</code> or to <code>struct&lt;11 x: int, 12 y: int&gt;</code>.</p>
+<h3 id="expression-example">Expression example<a class="headerlink" href="#expression-example" title="Permanent link">&para;</a></h3>
+<pre><code class="language-java">table.newScan()
+    .filter(Expressions.greaterThanOrEqual(&quot;x&quot;, 5))
+    .filter(Expressions.lessThan(&quot;x&quot;, 10))
+</code></pre>
+<h2 id="modules">Modules<a class="headerlink" href="#modules" title="Permanent link">&para;</a></h2>
+<p>Iceberg table support is organized in library modules:</p>
+<ul>
+<li><code>iceberg-common</code> contains utility classes used in other modules</li>
+<li><code>iceberg-api</code> contains the public Iceberg API, including expressions, types, tables, and operations</li>
+<li><code>iceberg-core</code> contains implementations of the Iceberg API and support for Avro data files, <strong>this is what processing engines should depend on</strong></li>
+<li><code>iceberg-parquet</code> is an optional module for working with tables backed by Parquet files</li>
+<li><code>iceberg-orc</code> is an optional module for working with tables backed by ORC files (<em>experimental</em>)</li>
+<li><code>iceberg-hive</code> is an implementation of iceberg tables backed by hive metastore thrift client</li>
+</ul>
+<p>This project Iceberg also has modules for adding Iceberg support to processing engines:</p>
+<ul>
+<li><code>iceberg-spark</code> is an implementation of Spark&rsquo;s Datasource V2 API for Iceberg (use iceberg-runtime for a shaded version)</li>
+<li><code>iceberg-data</code> is a client library used to read Iceberg tables from JVM applications</li>
+<li><code>iceberg-pig</code> is an implementation of Pig&rsquo;s LoadFunc API for Iceberg</li>
+<li><code>iceberg-runtime</code> generates a shaded runtime jar for Spark to integrate with iceberg tables</li>
+</ul></div>
+        
+        
+    </div>
+
+    
+      <footer class="col-md-12 text-center">
+          
+          
+            <hr>
+            <p>
+            <small>Copyright 2018-2020 <a href='https://www.apache.org/'>The Apache Software Foundation</a><br />Apache Iceberg, Iceberg, Apache, the Apache feather logo, and the Apache Iceberg project logo are either registered<br />trademarks or trademarks of The Apache Software Foundation in the United States and other countries.</small><br>
+            
+            <small>Documentation built with <a href="http://www.mkdocs.org/">MkDocs</a>.</small>
+            </p>
+          
+
+          
+          
+      </footer>
+    
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <script src="../js/bootstrap-3.0.3.min.js"></script>
+
+    
+    <script src="//cdn.jsdelivr.net/gh/highlightjs/cdn-release@9.18.0/build/highlight.min.js"></script>
+        
+    <script>hljs.initHighlightingOnLoad();</script>
+    
+
+    <script>var base_url = ".."</script>
+    
+    <script src="../js/base.js"></script>
+
+    <div class="modal" id="mkdocs_keyboard_modal" tabindex="-1" role="dialog" aria-labelledby="keyboardModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title" id="keyboardModalLabel">Keyboard Shortcuts</h4>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+            </div>
+            <div class="modal-body">
+              <table class="table">
+                <thead>
+                  <tr>
+                    <th style="width: 20%;">Keys</th>
+                    <th>Action</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td class="help shortcut"><kbd>?</kbd></td>
+                    <td>Open this help</td>
+                  </tr>
+                  <tr>
+                    <td class="next shortcut"><kbd>n</kbd></td>
+                    <td>Next page</td>
+                  </tr>
+                  <tr>
+                    <td class="prev shortcut"><kbd>p</kbd></td>
+                    <td>Previous page</td>
+                  </tr>
+                  <tr>
+                    <td class="search shortcut"><kbd>s</kbd></td>
+                    <td>Search</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+            <div class="modal-footer">
+            </div>
+        </div>
+    </div>
+</div>
+    </body>
+
+</html>
