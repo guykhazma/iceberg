@@ -20,8 +20,8 @@
 site_name: Apache Iceberg
 site_description: A table format for large, slow-moving tabular data
 
-remote_name: apache
-remote_branch: asf-site
+remote_name: site
+remote_branch: iceberg-site
 use_directory_urls: true
 
 theme: cinder
