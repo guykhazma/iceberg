@@ -28,7 +28,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
 import org.apache.iceberg.expressions.Evaluator;
-import org.apache.iceberg.expressions.EvaluatorInterface;
+import org.apache.iceberg.expressions.Evaluable;
 import org.apache.iceberg.expressions.Expression;
 import org.apache.iceberg.expressions.Expressions;
 import org.apache.iceberg.expressions.ManifestEvaluator;
@@ -223,10 +223,10 @@ class ManifestGroup {
               spec, caseSensitive);
         });
 
-    EvaluatorInterface evaluator;
+    Evaluable evaluator;
     if (fileFilter != null && fileFilter != Expressions.alwaysTrue()) {
       if (fileFilterImpl != null) {
-        evaluator = EvaluatorInterface.forTable(fileFilterImpl, table, fileFilter);
+        evaluator = Evaluable.forTable(fileFilterImpl, table, fileFilter);
       } else {
         evaluator = new Evaluator(DataFile.getType(EMPTY_STRUCT), fileFilter, caseSensitive);
       }
