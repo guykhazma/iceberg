@@ -222,12 +222,16 @@ class ManifestGroup {
     // TODO: remove complexity change
     if (fileFilter != null && fileFilter != Expressions.alwaysTrue()) {
       // try loading a custom evaluator
-      try {
-        DynConstructors.Ctor<EvaluatorInterface> implConstructor =
-            DynConstructors.builder().hiddenImpl(className, Table.class, Expression.class).buildChecked();
-        evaluator = implConstructor.newInstance(table, fileFilter);
-      } catch (NoSuchMethodException e) {
-        // use default evaluator
+      if (true || table.properties().containsKey("")) {
+        try {
+          DynConstructors.Ctor<EvaluatorInterface> implConstructor =
+                  DynConstructors.builder().hiddenImpl(className, Table.class, Expression.class).buildChecked();
+          evaluator = implConstructor.newInstance(table, fileFilter);
+        } catch (NoSuchMethodException e) {
+          // use default evaluator
+          evaluator = new Evaluator(DataFile.getType(EMPTY_STRUCT), fileFilter, caseSensitive);
+        }
+      } else {
         evaluator = new Evaluator(DataFile.getType(EMPTY_STRUCT), fileFilter, caseSensitive);
       }
     } else {
