@@ -28,13 +28,13 @@ public interface EvaluatorInterface {
   Load implementation by reflection
   */
   static EvaluatorInterface forTable(String className, Table table, Expression fileFilter) {
-      try {
-        DynConstructors.Ctor<EvaluatorInterface> implConstructor =
+    try {
+      DynConstructors.Ctor<EvaluatorInterface> implConstructor =
                 DynConstructors.builder().hiddenImpl(className, Table.class, Expression.class).buildChecked();
-        return implConstructor.newInstance(table, fileFilter);
-      } catch (NoSuchMethodException e) {
-        return null;
-      }
+      return implConstructor.newInstance(table, fileFilter);
+    } catch (NoSuchMethodException e) {
+      return null;
+    }
   }
 
   boolean eval(StructLike data);

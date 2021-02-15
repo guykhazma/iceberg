@@ -27,7 +27,6 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
-import org.apache.iceberg.common.DynConstructors;
 import org.apache.iceberg.expressions.Evaluator;
 import org.apache.iceberg.expressions.EvaluatorInterface;
 import org.apache.iceberg.expressions.Expression;
@@ -205,6 +204,7 @@ class ManifestGroup {
     return CloseableIterable.concat(entries((manifest, entries) -> entries));
   }
 
+  @SuppressWarnings("checkstyle:CyclomaticComplexity")
   private <T> Iterable<CloseableIterable<T>> entries(
       BiFunction<ManifestFile, CloseableIterable<ManifestEntry<DataFile>>, CloseableIterable<T>> entryFn) {
     LoadingCache<Integer, ManifestEvaluator> evalCache = specsById == null ?
@@ -219,10 +219,10 @@ class ManifestGroup {
     String className = "io.xskipper.search.IcebergDataSkippingFileFilter";
 
     EvaluatorInterface evaluator;
-    // TODO: remove complexity change
     if (fileFilter != null && fileFilter != Expressions.alwaysTrue()) {
-      // try loading a custom evaluator
-      if (true || table.properties().containsKey("")) {
+      // load custom evaluator if exists
+      // table.properties().containsKey("")
+      if (true) {
         evaluator = EvaluatorInterface.forTable(className, table, fileFilter);
       } else {
         evaluator = new Evaluator(DataFile.getType(EMPTY_STRUCT), fileFilter, caseSensitive);
