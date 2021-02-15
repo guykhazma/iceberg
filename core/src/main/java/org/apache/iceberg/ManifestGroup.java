@@ -223,23 +223,13 @@ class ManifestGroup {
     if (fileFilter != null && fileFilter != Expressions.alwaysTrue()) {
       // try loading a custom evaluator
       if (true || table.properties().containsKey("")) {
-        try {
-          DynConstructors.Ctor<EvaluatorInterface> implConstructor =
-                  DynConstructors.builder().hiddenImpl(className, Table.class, Expression.class).buildChecked();
-          evaluator = implConstructor.newInstance(table, fileFilter);
-        } catch (NoSuchMethodException e) {
-          // use default evaluator
-          evaluator = new Evaluator(DataFile.getType(EMPTY_STRUCT), fileFilter, caseSensitive);
-        }
+        evaluator = EvaluatorInterface.forTable(className, table, fileFilter);
       } else {
         evaluator = new Evaluator(DataFile.getType(EMPTY_STRUCT), fileFilter, caseSensitive);
       }
     } else {
       evaluator = null;
     }
-
-    // TODO: fix the problem with the final
-    final EvaluatorInterface e = evaluator;
 
     Iterable<ManifestFile> matchingManifests = evalCache == null ? dataManifests :
         Iterables.filter(dataManifests, manifest -> evalCache.get(manifest.partitionSpecId()).eval(manifest));
@@ -281,9 +271,9 @@ class ManifestGroup {
                 entry -> entry.status() != ManifestEntry.Status.EXISTING);
           }
 
-          if (e != null) {
+          if (evaluator != null) {
             entries = CloseableIterable.filter(entries,
-                entry -> e.eval((GenericDataFile) entry.file()));
+                entry -> evaluator.eval((GenericDataFile) entry.file()));
           }
 
           entries = CloseableIterable.filter(entries, manifestEntryPredicate);
