@@ -79,6 +79,11 @@ public class DataTableScan extends BaseTableScan {
         .specsById(ops.current().specsById())
         .ignoreDeleted();
 
+    // load pluggable file filter if it is configured
+    if (true) {
+      manifestGroup = manifestGroup.filterFiles(rowFilter);
+    }
+
     if (ignoreResiduals) {
       manifestGroup = manifestGroup.ignoreResiduals();
     }
