@@ -34,7 +34,7 @@ import org.apache.iceberg.util.NaNUtil;
  * <p>
  * This class is thread-safe.
  */
-public class Evaluator implements Serializable, Evaluable {
+public class Evaluator implements Evaluable, Serializable {
   private final Expression expr;
 
   public Evaluator(StructType struct, Expression unbound) {

@@ -27,8 +27,8 @@ import java.util.Set;
 import java.util.concurrent.ExecutorService;
 import java.util.function.BiFunction;
 import java.util.function.Predicate;
-import org.apache.iceberg.expressions.Evaluator;
 import org.apache.iceberg.expressions.Evaluable;
+import org.apache.iceberg.expressions.Evaluator;
 import org.apache.iceberg.expressions.Expression;
 import org.apache.iceberg.expressions.Expressions;
 import org.apache.iceberg.expressions.ManifestEvaluator;
@@ -103,10 +103,10 @@ class ManifestGroup {
   }
 
   // load custom filterFiles logic
-  ManifestGroup filterFiles(String fileFilterImpl, Expression newFileFilter, Table tbl) {
+  ManifestGroup filterFiles(String fileFilterImplementation, Expression newFileFilter, Table tbl) {
     this.fileFilter = Expressions.and(fileFilter, newFileFilter);
     this.table = tbl;
-    this.fileFilterImpl = fileFilterImpl;
+    this.fileFilterImpl = fileFilterImplementation;
     return this;
   }
 
