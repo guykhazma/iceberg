@@ -21,6 +21,9 @@ package org.apache.iceberg;
 
 import com.github.benmanes.caffeine.cache.Caffeine;
 import com.github.benmanes.caffeine.cache.LoadingCache;
+import io.xskipper.Xskipper;
+import io.xskipper.search.DataSkippingFileFilter;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -34,6 +37,7 @@ import org.apache.iceberg.expressions.ManifestEvaluator;
 import org.apache.iceberg.expressions.Projections;
 import org.apache.iceberg.expressions.ResidualEvaluator;
 import org.apache.iceberg.io.CloseableIterable;
+import org.apache.iceberg.io.CloseableIterator;
 import org.apache.iceberg.io.FileIO;
 import org.apache.iceberg.relocated.com.google.common.collect.Iterables;
 import org.apache.iceberg.relocated.com.google.common.collect.Lists;
@@ -212,10 +216,16 @@ class ManifestGroup {
         });
 
     Evaluator evaluator;
+    DataSkippingFileFilter dsf;
     if (fileFilter != null && fileFilter != Expressions.alwaysTrue()) {
-      evaluator = new Evaluator(DataFile.getType(EMPTY_STRUCT), fileFilter, caseSensitive);
+      // call data skipping init code
+      dsf = new DataSkippingFileFilter("local.db.table", Xskipper.getConf());
+      dsf.init(fileFilter);
+      evaluator = null; // new Evaluator(DataFile.getType(EMPTY_STRUCT), fileFilter, caseSensitive);
+      new Evaluator(DataFile.getType(EMPTY_STRUCT), fileFilter, caseSensitive);
     } else {
       evaluator = null;
+      dsf = null;
     }
 
     Iterable<ManifestFile> matchingManifests = evalCache == null ? dataManifests :
@@ -261,6 +271,11 @@ class ManifestGroup {
           if (evaluator != null) {
             entries = CloseableIterable.filter(entries,
                 entry -> evaluator.eval((GenericDataFile) entry.file()));
+          }
+
+          if (dsf != null && dsf.isSkipabble()) {
+            entries = CloseableIterable.filter(entries,
+                    entry -> dsf.isRequired(entry.file().path().toString()));
           }
 
           entries = CloseableIterable.filter(entries, manifestEntryPredicate);

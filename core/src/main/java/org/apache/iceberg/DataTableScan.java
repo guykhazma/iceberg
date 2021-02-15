@@ -74,6 +74,7 @@ public class DataTableScan extends BaseTableScan {
     ManifestGroup manifestGroup = new ManifestGroup(ops.io(), snapshot.dataManifests(), snapshot.deleteManifests())
         .caseSensitive(caseSensitive)
         .select(colStats ? SCAN_WITH_STATS_COLUMNS : SCAN_COLUMNS)
+        .filterFiles(rowFilter)
         .filterData(rowFilter)
         .specsById(ops.current().specsById())
         .ignoreDeleted();
