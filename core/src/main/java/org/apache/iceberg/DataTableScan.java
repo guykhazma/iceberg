@@ -80,7 +80,9 @@ public class DataTableScan extends BaseTableScan {
 
     // load pluggable file filter if it is configured
     if (true) {
-      manifestGroup = manifestGroup.filterFiles(rowFilter, table());
+      manifestGroup = manifestGroup.filterFiles(
+              "io.xskipper.search.IcebergDataSkippingFileFilter",
+              rowFilter, table());
     }
 
     if (ignoreResiduals) {

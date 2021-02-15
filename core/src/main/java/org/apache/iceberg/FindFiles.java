@@ -200,7 +200,7 @@ public class FindFiles {
       CloseableIterable<ManifestEntry<DataFile>> entries = new ManifestGroup(ops.io(), snapshot.dataManifests())
           .specsById(ops.current().specsById())
           .filterData(rowFilter)
-          .filterFiles(fileFilter, table)
+          .filterFiles(fileFilter)
           .filterPartitions(partitionFilter)
           .ignoreDeleted()
           .caseSensitive(caseSensitive)

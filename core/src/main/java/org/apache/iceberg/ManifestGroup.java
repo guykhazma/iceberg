@@ -53,6 +53,7 @@ class ManifestGroup {
   private Map<Integer, PartitionSpec> specsById;
   private Expression dataFilter;
   private Expression fileFilter;
+  private String fileFilterImpl;
   private Expression partitionFilter;
   private boolean ignoreDeleted;
   private boolean ignoreExisting;
@@ -96,9 +97,16 @@ class ManifestGroup {
     return this;
   }
 
-  ManifestGroup filterFiles(Expression newFileFilter, Table tbl) {
+  ManifestGroup filterFiles(Expression newFileFilter) {
+    this.fileFilter = Expressions.and(fileFilter, newFileFilter);
+    return this;
+  }
+
+  // load custom filterFiles logic
+  ManifestGroup filterFiles(String fileFilterImpl, Expression newFileFilter, Table tbl) {
     this.fileFilter = Expressions.and(fileFilter, newFileFilter);
     this.table = tbl;
+    this.fileFilterImpl = fileFilterImpl;
     return this;
   }
 
@@ -215,15 +223,10 @@ class ManifestGroup {
               spec, caseSensitive);
         });
 
-    // TODO: replace with getting the entire table and have the evaluator decide which values to use
-    String className = "io.xskipper.search.IcebergDataSkippingFileFilter";
-
     EvaluatorInterface evaluator;
     if (fileFilter != null && fileFilter != Expressions.alwaysTrue()) {
-      // load custom evaluator if exists
-      // table.properties().containsKey("")
-      if (true) {
-        evaluator = EvaluatorInterface.forTable(className, table, fileFilter);
+      if (fileFilterImpl != null) {
+        evaluator = EvaluatorInterface.forTable(fileFilterImpl, table, fileFilter);
       } else {
         evaluator = new Evaluator(DataFile.getType(EMPTY_STRUCT), fileFilter, caseSensitive);
       }
