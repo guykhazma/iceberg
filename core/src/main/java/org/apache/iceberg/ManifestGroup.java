@@ -61,6 +61,7 @@ class ManifestGroup {
   private List<String> columns;
   private boolean caseSensitive;
   private ExecutorService executorService;
+  private Table table;
 
   ManifestGroup(FileIO io, Iterable<ManifestFile> manifests) {
     this(io,
@@ -96,8 +97,9 @@ class ManifestGroup {
     return this;
   }
 
-  ManifestGroup filterFiles(Expression newFileFilter) {
+  ManifestGroup filterFiles(Expression newFileFilter, Table tbl) {
     this.fileFilter = Expressions.and(fileFilter, newFileFilter);
+    this.table = tbl;
     return this;
   }
 
@@ -213,17 +215,17 @@ class ManifestGroup {
               spec, caseSensitive);
         });
 
+    // TODO: replace with getting the entire table and have the evaluator decide which values to use
+    String className = "io.xskipper.search.IcebergDataSkippingFileFilter";
+
     EvaluatorInterface evaluator;
     // TODO: remove complexity change
     if (fileFilter != null && fileFilter != Expressions.alwaysTrue()) {
       // try loading a custom evaluator
       try {
-        String className = "io.xskipper.search.IcebergDataSkippingFileFilter";
-        // TODO: replace with getting the entire table and have the evaluator decide which values to use
-        String identifer = "local.db.table";
         DynConstructors.Ctor<EvaluatorInterface> implConstructor =
-            DynConstructors.builder().hiddenImpl(className, String.class, Expression.class).buildChecked();
-        evaluator = implConstructor.newInstance(identifer, fileFilter);
+            DynConstructors.builder().hiddenImpl(className, Table.class, Expression.class).buildChecked();
+        evaluator = implConstructor.newInstance(table, fileFilter);
       } catch (NoSuchMethodException e) {
         // use default evaluator
         evaluator = new Evaluator(DataFile.getType(EMPTY_STRUCT), fileFilter, caseSensitive);
