@@ -19,23 +19,20 @@
 
 package org.apache.iceberg.expressions;
 
-import org.apache.iceberg.StructLike;
 import org.apache.iceberg.Table;
 import org.apache.iceberg.common.DynConstructors;
 
-public interface Evaluable {
+public class FileFilterUtils {
   /*
   Load implementation by reflection
   */
-  static Evaluable forTable(String className, Table table, Expression fileFilter) {
+  public static Evaluator forTable(String className, Table table, Expression fileFilter) {
     try {
-      DynConstructors.Ctor<Evaluable> implConstructor =
+      DynConstructors.Ctor<Evaluator> implConstructor =
                 DynConstructors.builder().hiddenImpl(className, Table.class, Expression.class).buildChecked();
       return implConstructor.newInstance(table, fileFilter);
     } catch (NoSuchMethodException e) {
       return null;
     }
   }
-
-  boolean eval(StructLike data);
 }
