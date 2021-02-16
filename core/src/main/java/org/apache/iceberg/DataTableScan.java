@@ -78,6 +78,17 @@ public class DataTableScan extends BaseTableScan {
         .specsById(ops.current().specsById())
         .ignoreDeleted();
 
+    // load pluggable file filter if it is configured
+    if (true) {
+      ExternalFileFilterBuilder fileFilterBuilder = new ExternalFileFilterBuilder();
+      fileFilterBuilder.fileFilterImpl("io.xskipper.search.IcebergDataSkippingFileFilter");
+      fileFilterBuilder.table(table());
+
+      manifestGroup = manifestGroup
+              .filterFiles(rowFilter)
+              .withFileFilterBuilder(fileFilterBuilder);
+    }
+
     if (ignoreResiduals) {
       manifestGroup = manifestGroup.ignoreResiduals();
     }
