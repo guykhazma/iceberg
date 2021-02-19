@@ -81,7 +81,7 @@ class SparkBatchQueryScan extends SparkBatchScan {
     this.splitSize = Spark3Util.propertyAsLong(options, SparkReadOptions.SPLIT_SIZE, null);
     this.splitLookback = Spark3Util.propertyAsInt(options, SparkReadOptions.LOOKBACK, null);
     this.splitOpenFileCost = Spark3Util.propertyAsLong(options, SparkReadOptions.FILE_OPEN_COST, null);
-    this.fileFilterImpl = options.getOrDefault(SparkReadOptions.FILE_FILE_IMPL, null);
+    this.fileFilterImpl = options.getOrDefault("read.fileFilter.impl", null);
   }
 
   @Override
