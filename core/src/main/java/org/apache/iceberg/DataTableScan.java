@@ -79,11 +79,13 @@ public class DataTableScan extends BaseTableScan {
         .ignoreDeleted();
 
     // load pluggable file filter if it is configured
-    if (true) {
-      ExternalFileFilterBuilder fileFilterBuilder = new ExternalFileFilterBuilder();
-      fileFilterBuilder.fileFilterImpl("io.xskipper.search.IcebergDataSkippingFileFilter");
-      fileFilterBuilder.table(table());
+    String fileFilterImpl = context().options().get("read.fileFilter.impl");
+    if (fileFilterImpl != null) {
+      ExternalFileFilterBuilder fileFilterBuilder = new ExternalFileFilterBuilder()
+              .fileFilterImpl(fileFilterImpl)
+              .table(table());
 
+      // todo: maybe ManifestGroup should stop "And"-ing the file filters
       manifestGroup = manifestGroup
               .filterFiles(rowFilter)
               .withFileFilterBuilder(fileFilterBuilder);

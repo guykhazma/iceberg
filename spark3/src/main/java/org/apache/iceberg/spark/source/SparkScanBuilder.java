@@ -71,6 +71,10 @@ public class SparkScanBuilder implements ScanBuilder, SupportsPushDownFilters, S
   SparkScanBuilder(SparkSession spark, Table table, CaseInsensitiveStringMap options) {
     this.spark = spark;
     this.table = table;
+    String fileFilterImpl = spark.sessionState().newHadoopConf().get("read.fileFilter.impl");
+    if (fileFilterImpl != null) {
+      options.put("read.fileFilter.impl", fileFilterImpl);
+    }
     this.options = options;
     this.caseSensitive = Boolean.parseBoolean(spark.conf().get("spark.sql.caseSensitive"));
   }
