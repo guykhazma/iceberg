@@ -60,16 +60,19 @@ public interface ManifestFile {
       optional(511, "upper_bound", Types.BinaryType.get(), "Partition upper bound for all files")
   );
   Types.NestedField PARTITION_SUMMARIES = optional(507, "partitions",
-      Types.ListType.ofRequired(508, PARTITION_SUMMARY_TYPE),
-      "Summary for each partition");
-  // next ID to assign: 519
+          Types.ListType.ofRequired(508, PARTITION_SUMMARY_TYPE),
+          "Summary for each partition");
+  Types.NestedField INDEX_METADATA = optional(519, "index_metadata",
+          Types.MapType.ofRequired(520, 521, Types.StringType.get(), Types.StringType.get()),
+          "Index metadata for the manifest");
+  // next ID to assign: 522
 
   Schema SCHEMA = new Schema(
       PATH, LENGTH, SPEC_ID, MANIFEST_CONTENT,
       SEQUENCE_NUMBER, MIN_SEQUENCE_NUMBER, SNAPSHOT_ID,
       ADDED_FILES_COUNT, EXISTING_FILES_COUNT, DELETED_FILES_COUNT,
       ADDED_ROWS_COUNT, EXISTING_ROWS_COUNT, DELETED_ROWS_COUNT,
-      PARTITION_SUMMARIES);
+      PARTITION_SUMMARIES,  INDEX_METADATA);
 
   static Schema schema() {
     return SCHEMA;
