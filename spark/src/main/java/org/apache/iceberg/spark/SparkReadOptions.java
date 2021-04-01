@@ -47,4 +47,5 @@ public class SparkReadOptions {
 
   // Overrides the table's read.parquet.vectorization.batch-size
   public static final String VECTORIZATION_BATCH_SIZE = "batch-size";
+
 }

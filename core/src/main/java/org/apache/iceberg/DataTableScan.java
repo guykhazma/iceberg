@@ -78,6 +78,19 @@ public class DataTableScan extends BaseTableScan {
         .specsById(ops.current().specsById())
         .ignoreDeleted();
 
+    // load pluggable file filter if it is configured
+    String fileFilterImpl = context().options().get("read.fileFilter.impl");
+    if (fileFilterImpl != null) {
+      ExternalFileFilterBuilder fileFilterBuilder = new ExternalFileFilterBuilder()
+              .fileFilterImpl(fileFilterImpl)
+              .table(table());
+
+      // todo: maybe ManifestGroup should stop "And"-ing the file filters
+      manifestGroup = manifestGroup
+              .filterFiles(rowFilter)
+              .withFileFilterBuilder(fileFilterBuilder);
+    }
+
     if (ignoreResiduals) {
       manifestGroup = manifestGroup.ignoreResiduals();
     }

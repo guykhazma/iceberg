@@ -38,12 +38,9 @@ import org.apache.iceberg.io.FileIO;
 import org.apache.iceberg.relocated.com.google.common.collect.Iterables;
 import org.apache.iceberg.relocated.com.google.common.collect.Lists;
 import org.apache.iceberg.relocated.com.google.common.collect.Sets;
-import org.apache.iceberg.types.Types;
 import org.apache.iceberg.util.ParallelIterable;
 
 class ManifestGroup {
-  private static final Types.StructType EMPTY_STRUCT = Types.StructType.of();
-
   private final FileIO io;
   private final Set<ManifestFile> dataManifests;
   private final DeleteFileIndex.Builder deleteIndexBuilder;
@@ -52,6 +49,7 @@ class ManifestGroup {
   private Map<Integer, PartitionSpec> specsById;
   private Expression dataFilter;
   private Expression fileFilter;
+  private FileFilterBuilder fileFilterBuilder;
   private Expression partitionFilter;
   private boolean ignoreDeleted;
   private boolean ignoreExisting;
@@ -80,6 +78,7 @@ class ManifestGroup {
     this.caseSensitive = true;
     this.manifestPredicate = m -> true;
     this.manifestEntryPredicate = e -> true;
+    this.fileFilterBuilder = new BaseFileFilterBuilder().caseSensitive(caseSensitive);
   }
 
   ManifestGroup specsById(Map<Integer, PartitionSpec> newSpecsById) {
@@ -96,6 +95,11 @@ class ManifestGroup {
 
   ManifestGroup filterFiles(Expression newFileFilter) {
     this.fileFilter = Expressions.and(fileFilter, newFileFilter);
+    return this;
+  }
+
+  ManifestGroup withFileFilterBuilder(FileFilterBuilder newfileFilterBuilder) {
+    this.fileFilterBuilder = newfileFilterBuilder;
     return this;
   }
 
@@ -211,12 +215,7 @@ class ManifestGroup {
               spec, caseSensitive);
         });
 
-    Evaluator evaluator;
-    if (fileFilter != null && fileFilter != Expressions.alwaysTrue()) {
-      evaluator = new Evaluator(DataFile.getType(EMPTY_STRUCT), fileFilter, caseSensitive);
-    } else {
-      evaluator = null;
-    }
+    Evaluator evaluator = fileFilterBuilder.build(fileFilter);
 
     Iterable<ManifestFile> matchingManifests = evalCache == null ? dataManifests :
         Iterables.filter(dataManifests, manifest -> evalCache.get(manifest.partitionSpecId()).eval(manifest));

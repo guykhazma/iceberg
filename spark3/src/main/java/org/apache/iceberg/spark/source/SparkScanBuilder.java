@@ -20,7 +20,9 @@
 package org.apache.iceberg.spark.source;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 import org.apache.iceberg.MetadataColumns;
@@ -71,7 +73,17 @@ public class SparkScanBuilder implements ScanBuilder, SupportsPushDownFilters, S
   SparkScanBuilder(SparkSession spark, Table table, CaseInsensitiveStringMap options) {
     this.spark = spark;
     this.table = table;
-    this.options = options;
+    String fileFilterImpl = spark.sessionState().newHadoopConf().get("iceberg.read.fileFilter.impl");
+    // todo: find a cleaner way to pass the configs so we won't have to modify this map
+    // after SPARK-32592 is resolved
+    if (fileFilterImpl != null) {
+      Map<String, String> tmp = new HashMap<String, String>(options);
+      tmp.put("read.fileFilter.impl", fileFilterImpl);
+      this.options = new CaseInsensitiveStringMap(tmp);
+    } else {
+      this.options = options;
+    }
+
     this.caseSensitive = Boolean.parseBoolean(spark.conf().get("spark.sql.caseSensitive"));
   }
 

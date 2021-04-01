@@ -45,6 +45,11 @@ public class Evaluator implements Serializable {
     this.expr = Binder.bind(struct, unbound, caseSensitive);
   }
 
+  // protected constructor to enable Evaluators which don't use bind
+  protected Evaluator(Expression unbound) {
+    this.expr = unbound;
+  }
+
   public boolean eval(StructLike data) {
     return new EvalVisitor().eval(data);
   }
