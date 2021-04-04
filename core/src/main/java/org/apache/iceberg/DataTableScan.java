@@ -83,6 +83,7 @@ public class DataTableScan extends BaseTableScan {
     if (fileFilterImpl != null) {
       ExternalFileFilterBuilder fileFilterBuilder = new ExternalFileFilterBuilder()
               .fileFilterImpl(fileFilterImpl)
+              .manifestGroup(manifestGroup)
               .table(table());
 
       // todo: maybe ManifestGroup should stop "And"-ing the file filters

@@ -25,6 +25,7 @@ import org.apache.iceberg.expressions.Expression;
 
 public class ExternalFileFilterBuilder implements FileFilterBuilder {
   private String fileFilterImpl;
+  private ManifestGroup manifestGroup;
   private Table table;
 
   /*
@@ -40,6 +41,16 @@ public class ExternalFileFilterBuilder implements FileFilterBuilder {
     }
   }
 
+  private static Evaluator forTable(String className, Table table, ManifestGroup mgroup, Expression fileFilter) {
+    try {
+      DynConstructors.Ctor<Evaluator> implConstructor =
+              DynConstructors.builder().hiddenImpl(className, Table.class, ManifestGroup.class, Expression.class).buildChecked();
+      return implConstructor.newInstance(table, mgroup, fileFilter);
+    } catch (NoSuchMethodException e) {
+      return null;
+    }
+  }
+
   public ExternalFileFilterBuilder fileFilterImpl(String filterImpl) {
     this.fileFilterImpl = filterImpl;
     return this;
@@ -50,8 +61,13 @@ public class ExternalFileFilterBuilder implements FileFilterBuilder {
     return this;
   }
 
+  public ExternalFileFilterBuilder manifestGroup(ManifestGroup mGroup) {
+    this.manifestGroup = mGroup;
+    return this;
+  }
+
   @Override
   public Evaluator build(Expression fileFilter) {
-    return forTable(fileFilterImpl, table, fileFilter);
+    return forTable(fileFilterImpl, table, manifestGroup, fileFilter);
   }
 }
