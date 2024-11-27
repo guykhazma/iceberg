@@ -585,7 +585,7 @@ public class TestSparkScan extends TestBaseWithCatalog {
     String type = "STRING";
 
     createTable(columnName, type, "'a'", "'b'", "'c'", "NULL");
-    testTableWithNdvAndStatsFromManifest(columnName, 3L, "a", "b", 1L);
+    testTableWithNdvAndStatsFromManifest(columnName, 3L, "a", "c", 1L);
   }
 
   @TestTemplate

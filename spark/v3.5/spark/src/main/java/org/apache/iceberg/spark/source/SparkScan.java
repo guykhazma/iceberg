@@ -18,6 +18,7 @@
  */
 package org.apache.iceberg.spark.source;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.nio.ByteBuffer;
 import java.util.Collections;
@@ -29,6 +30,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 import org.apache.iceberg.BlobMetadata;
 import org.apache.iceberg.FileScanTask;
 import org.apache.iceberg.ScanTask;
@@ -37,8 +39,13 @@ import org.apache.iceberg.Schema;
 import org.apache.iceberg.Snapshot;
 import org.apache.iceberg.SnapshotSummary;
 import org.apache.iceberg.StatisticsFile;
+import org.apache.iceberg.StructLike;
 import org.apache.iceberg.Table;
+import org.apache.iceberg.expressions.AggregateEvaluator;
+import org.apache.iceberg.expressions.CountNonNull;
 import org.apache.iceberg.expressions.Expression;
+import org.apache.iceberg.expressions.Expressions;
+import org.apache.iceberg.io.CloseableIterable;
 import org.apache.iceberg.metrics.ScanReport;
 import org.apache.iceberg.relocated.com.google.common.base.Strings;
 import org.apache.iceberg.relocated.com.google.common.collect.Lists;
@@ -282,63 +289,54 @@ abstract class SparkScan implements Scan, SupportsReportStatistics {
       Map<Integer, Object> minValues,
       Map<Integer, Object> maxValues,
       Map<Integer, Long> nullCounts) {
-    Map<String, Map<Integer, Long>> nullCountDataFiles = Maps.newHashMap();
-    Map<String, Map<Integer, ByteBuffer>> minDataFiles = Maps.newHashMap();
-    Map<String, Map<Integer, ByteBuffer>> maxDataFiles = Maps.newHashMap();
     // extract the distinct files which are part of the task planning
     Set<FileScanTask> fileScanTasks =
-        taskGroups().stream()
-            .flatMap(taskGroup -> taskGroup.tasks().stream())
-            .filter(ScanTask::isFileScanTask)
-            .map(ScanTask::asFileScanTask)
-            .collect(Collectors.toSet()); // Collect into a Set
+            taskGroups().stream()
+                    .flatMap(taskGroup -> taskGroup.tasks().stream())
+                    .filter(ScanTask::isFileScanTask)
+                    .map(ScanTask::asFileScanTask)
+                    .collect(Collectors.toSet()); // Collect into a Set
 
     // check for row level deletes
     boolean existsWithDeletes = fileScanTasks.stream().anyMatch(task -> !task.deletes().isEmpty());
     if (!existsWithDeletes) {
-      fileScanTasks.forEach(
-          task -> {
-            FileScanTask fileScanTask = task.asFileScanTask();
-            String filePath = fileScanTask.file().location();
+      // For each column we collect min/max and non-null count
+      List<Expression> expressions = table.schema().columns().stream()
+              .map(field -> {
+                String colName = field.name(); // Extract the column name
+                // Create expressions for max and min non-null count
+                return List.of(
+                        Expressions.min(colName),
+                        Expressions.max(colName),
+                        Expressions.count(colName)
+                );
+              })
+              .flatMap(List::stream) // Flatten the lists into a single stream
+              .collect(Collectors.toList());
 
-            // Add to the map only if it doesn't already exist
-            nullCountDataFiles.putIfAbsent(filePath, fileScanTask.file().nullValueCounts());
-            minDataFiles.putIfAbsent(filePath, fileScanTask.file().lowerBounds());
-            maxDataFiles.putIfAbsent(filePath, fileScanTask.file().upperBounds());
-          });
-      nullCounts.putAll(calculateNullCount(nullCountDataFiles));
-      minValues.putAll(calculateMin(minDataFiles));
-      maxValues.putAll(calculateMax(maxDataFiles));
+      AggregateEvaluator aggregateEvaluator = AggregateEvaluator.create(table.schema(),
+              expressions);
+      for (FileScanTask task : fileScanTasks) {
+        aggregateEvaluator.update(task.file());
+      }
+
+      if (!aggregateEvaluator.allAggregatorsValid()) {
+        return;
+      }
+      // get the total row count to compute the number of null rows
+      long rowsCount = taskGroups().stream().mapToLong(ScanTaskGroup::estimatedRowsCount).sum();
+      // populate the map with the results
+      StructLike res = aggregateEvaluator.result();
+      IntStream.range(0, table.schema().columns().size())
+              .forEach(i -> {
+                minValues.put(table.schema().columns().get(i).fieldId(), res.get(i*3, Object.class));
+                maxValues.put(table.schema().columns().get(i).fieldId(), res.get(i*3 + 1, Object.class));
+                nullCounts.put(table.schema().columns().get(i).fieldId(),
+                        rowsCount - res.get(i*3 + 2, Long.class));
+              });
     } else {
       LOG.info("Skip deriving stats from manifest : detected row level deletes");
     }
-  }
-
-  private Map<Integer, Long> calculateNullCount(
-      Map<String, Map<Integer, Long>> nullCountDataFiles) {
-    Map<Integer, Long> nullCount;
-    // get the null counts from the manifest file
-    nullCount =
-        nullCountDataFiles.values().stream() // Stream<Map<Integer, Long>>
-            .flatMap(
-                innerMap ->
-                    innerMap.entrySet().stream()) // Flatten to Stream<Map.Entry<Integer, Long>>
-            .collect(
-                Collectors.toMap(
-                    Map.Entry::getKey, // Key is the column id
-                    Map.Entry::getValue,
-                    Long::sum,
-                    HashMap::new));
-    return nullCount;
-  }
-
-  private Object toSparkType(Type type, Object value) {
-    switch (type.typeId()) {
-      case DECIMAL:
-        return Decimal.apply((BigDecimal) value);
-      default:
-    }
-    return value;
   }
 
   // min/max are calculated for numeric, Date, and Timestamp only
@@ -356,64 +354,6 @@ abstract class SparkScan implements Scan, SupportsReportStatistics {
       default:
         return false;
     }
-  }
-
-  // extract min/max values from the manifests
-  private Map<Integer, Object> calculateMin(Map<String, Map<Integer, ByteBuffer>> minDataFiles) {
-    Map<Integer, Object> minValues = Maps.newHashMap();
-    // aggregate
-    for (Map<Integer, ByteBuffer> values : minDataFiles.values()) {
-      for (Map.Entry<Integer, ByteBuffer> entry : values.entrySet()) {
-        Type.PrimitiveType fieldType = table.schema().findType(entry.getKey()).asPrimitiveType();
-        if (isValidMinMaxType(fieldType)) {
-          Comparator<Object> fieldComparator = Comparators.forType(fieldType);
-          Object existingDecoded = minValues.getOrDefault(entry.getKey(), null);
-          Object newValueDecoded = Conversions.fromByteBuffer(fieldType, entry.getValue());
-
-          Object combinedValue =
-              Optional.ofNullable(existingDecoded)
-                  .map(
-                      existing ->
-                          Optional.ofNullable(newValueDecoded)
-                              .filter(newValue -> fieldComparator.compare(existing, newValue) > 0)
-                              .orElse(existing)) // If newValueDecoded is null, keep existing
-                  .orElse(newValueDecoded);
-          minValues.put(entry.getKey(), combinedValue);
-        }
-      }
-    }
-    // map to spark type
-    minValues.replaceAll((id, value) -> toSparkType(table.schema().findType(id), value));
-    return minValues;
-  }
-
-  // extract min/max values from the manifests
-  private Map<Integer, Object> calculateMax(Map<String, Map<Integer, ByteBuffer>> maxDataFiles) {
-    Map<Integer, Object> maxValues = Maps.newHashMap();
-    // aggregate
-    for (Map<Integer, ByteBuffer> values : maxDataFiles.values()) {
-      for (Map.Entry<Integer, ByteBuffer> entry : values.entrySet()) {
-        Type.PrimitiveType fieldType = table.schema().findType(entry.getKey()).asPrimitiveType();
-        if (isValidMinMaxType(fieldType)) {
-          Comparator<Object> fieldComparator = Comparators.forType(fieldType);
-          Object existingDecoded = maxValues.getOrDefault(entry.getKey(), null);
-          Object newValueDecoded = Conversions.fromByteBuffer(fieldType, entry.getValue());
-
-          Object combinedValue =
-              Optional.ofNullable(existingDecoded)
-                  .map(
-                      existing ->
-                          Optional.ofNullable(newValueDecoded)
-                              .filter(newValue -> fieldComparator.compare(existing, newValue) < 0)
-                              .orElse(existing)) // If newValueDecoded is null, keep existing
-                  .orElse(newValueDecoded);
-          maxValues.put(entry.getKey(), combinedValue);
-        }
-      }
-    }
-    // map to spark type
-    maxValues.replaceAll((id, value) -> toSparkType(table.schema().findType(id), value));
-    return maxValues;
   }
 
   private long totalRecords(Snapshot snapshot) {
