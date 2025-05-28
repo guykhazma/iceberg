@@ -32,13 +32,17 @@ import org.apache.iceberg.io.CloseableIterable;
 import org.apache.iceberg.io.FileAppender;
 import org.apache.iceberg.parquet.Parquet;
 import org.apache.iceberg.relocated.com.google.common.collect.Iterables;
+import org.apache.iceberg.relocated.com.google.common.collect.Maps;
 import org.apache.iceberg.spark.SparkBenchmarkUtil;
 import org.apache.iceberg.spark.SparkSchemaUtil;
 import org.apache.iceberg.spark.data.RandomData;
 import org.apache.iceberg.spark.data.SparkParquetReaders;
+import org.apache.iceberg.spark.data.vectorized.VectorizedSparkParquetReaders;
 import org.apache.iceberg.types.Types;
 import org.apache.spark.sql.catalyst.InternalRow;
+import org.apache.spark.sql.catalyst.expressions.GenericInternalRow;
 import org.apache.spark.sql.catalyst.expressions.UnsafeProjection;
+import org.apache.spark.sql.vectorized.ColumnarBatch;
 import org.apache.spark.sql.execution.datasources.parquet.ParquetReadSupport;
 import org.apache.spark.sql.types.StructType;
 import org.openjdk.jmh.annotations.Benchmark;
@@ -109,17 +113,51 @@ public class SparkParquetReadersFlatDataBenchmark {
     }
   }
 
+//  @Benchmark
+//  @Threads(1)
+//  public void readUsingIcebergReader(Blackhole blackHole) throws IOException {
+//    try (CloseableIterable<InternalRow> rows =
+//        Parquet.read(Files.localInput(dataFile))
+//            .project(SCHEMA)
+//            .createReaderFunc(type -> SparkParquetReaders.buildReader(SCHEMA, type))
+//            .build()) {
+//
+//      for (InternalRow row : rows) {
+//        blackHole.consume(row);
+//      }
+//    }
+//  }
+
   @Benchmark
   @Threads(1)
-  public void readUsingIcebergReader(Blackhole blackHole) throws IOException {
-    try (CloseableIterable<InternalRow> rows =
+  public void readUsingIcebergVectorizedReader(Blackhole blackHole) throws IOException {
+    try (CloseableIterable<ColumnarBatch> rows =
         Parquet.read(Files.localInput(dataFile))
             .project(SCHEMA)
-            .createReaderFunc(type -> SparkParquetReaders.buildReader(SCHEMA, type))
+            .recordsPerBatch(5000)
+            .createBatchedReaderFunc(
+                    type ->
+                            VectorizedSparkParquetReaders.buildReader(
+                                    SCHEMA, type, Maps.newHashMap(), null))
             .build()) {
 
-      for (InternalRow row : rows) {
-        blackHole.consume(row);
+      // Iterate through each ColumnarBatch in the CloseableIterable
+      for (ColumnarBatch columnarBatch : rows) {
+
+        // Iterate through each row in the ColumnarBatch
+        for (int i = 0; i < columnarBatch.numRows(); i++) {
+          // Create an InternalRow from each row in the ColumnarBatch
+          InternalRow internalRow = new GenericInternalRow(columnarBatch.numCols());
+
+          // Fill the InternalRow with the column values from the ColumnarBatch
+          for (int j = 0; j < columnarBatch.numCols(); j++) {
+            // Get the column value at the current row and column
+            internalRow.update(0, columnarBatch.column(0).getLong(i));
+          }
+
+          // Consume the InternalRow (you can process or store it as needed)
+          blackHole.consume(internalRow); // Or any other processing you need
+        }
       }
     }
   }
