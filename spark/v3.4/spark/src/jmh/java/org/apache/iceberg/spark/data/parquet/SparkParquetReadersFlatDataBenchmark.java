@@ -113,20 +113,20 @@ public class SparkParquetReadersFlatDataBenchmark {
     }
   }
 
-//  @Benchmark
-//  @Threads(1)
-//  public void readUsingIcebergReader(Blackhole blackHole) throws IOException {
-//    try (CloseableIterable<InternalRow> rows =
-//        Parquet.read(Files.localInput(dataFile))
-//            .project(SCHEMA)
-//            .createReaderFunc(type -> SparkParquetReaders.buildReader(SCHEMA, type))
-//            .build()) {
-//
-//      for (InternalRow row : rows) {
-//        blackHole.consume(row);
-//      }
-//    }
-//  }
+  @Benchmark
+  @Threads(1)
+  public void readUsingIcebergReader(Blackhole blackHole) throws IOException {
+    try (CloseableIterable<InternalRow> rows =
+        Parquet.read(Files.localInput(dataFile))
+            .project(SCHEMA)
+            .createReaderFunc(type -> SparkParquetReaders.buildReader(SCHEMA, type))
+            .build()) {
+
+      for (InternalRow row : rows) {
+        blackHole.consume(row);
+      }
+    }
+  }
 
   @Benchmark
   @Threads(1)
